@@ -15,6 +15,21 @@ class PostController extends Controller
         $this->postRepository = $postRepository;
     }
 
+    public function index()
+    {
+        return view('home', [
+            'data' => ''
+        ]);
+    }
+
+    public function MyPost()
+    {
+        $data = $this->postRepository->getMyPost();
+        return view('home', [
+            'data' => $data ?? ''
+        ]);
+    }
+
     public function create()
     {
         return view('posts.create');

@@ -8,6 +8,11 @@ class PostRepository
 {
     public function create($data)
     {
-        Post::create($data);
+        return Post::create($data);
+    }
+
+    public function getMyPost()
+    {
+        return Post::where('user_id', auth()->id())->get();
     }
 }
