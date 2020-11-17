@@ -26,7 +26,8 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <a href="./chatify"><i class="fab fa-facebook-messenger"></i></a>
+                <a href="http://{{ request()->getHost() }}/chatify" title="Messages" class="mr-5"><i class="fab fa-facebook-messenger"></i></a>
+                <a href="{{ route('post.create') }}" title="Create Post" class="mr-5"><i class="fas fa-pen"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -78,5 +79,6 @@
         </main>
     </div>
     @yield('content1')
+    @yield('script')
 </body>
 </html>
