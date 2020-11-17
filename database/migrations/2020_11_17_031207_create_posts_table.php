@@ -18,8 +18,6 @@ class CreatePostsTable extends Migration
             $table->bigInteger('user_id');
             $table->string('title');
             $table->longText('content')->nullable();
-            $table->integer('up_vote')->nullable();
-            $table->integer('down_vote')->nullable();
             $table->integer('thread_id')->nullable();
             $table->timestamps();
         });
