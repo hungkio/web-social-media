@@ -27,8 +27,8 @@
             font-weight: normal;
         }
     </style>
+    <div class="container-fluid">
     <div class="row">
-
         <div class="col-md-8 col-md-offset-2">
 
             <h1>Create post</h1>
@@ -38,11 +38,17 @@
                 <div class="form-group">
                     <label for="title">Title <span class="require">*</span></label>
                     <input type="text" class="form-control" name="title"/>
+                    @error('title')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea rows="5" class="form-control" name="content" id="summernote"></textarea>
+                    @error('content')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -57,6 +63,7 @@
             </form>
         </div>
 
+    </div>
     </div>
 @endsection
 @section('script')
