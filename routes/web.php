@@ -22,3 +22,7 @@ Route::prefix('post')->name('post.')->group(function () {
     Route::post('/store', 'PostController@store')->name('store');
     Route::get('/my', 'PostController@MyPost')->name('my_post');
 });
+
+Route::prefix('vote')->name('vote.')->group(function () {
+    Route::post('/update', 'VoteController@update')->name('update');
+});

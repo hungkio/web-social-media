@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\VoteRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Repositories\PostRepository;
@@ -9,10 +10,15 @@ use App\Http\Repositories\PostRepository;
 class PostController extends Controller
 {
     protected $postRepository;
+    protected $voteRepository;
 
-    public function __construct(PostRepository $postRepository)
+    public function __construct(
+        PostRepository $postRepository,
+        VoteRepository $voteRepository
+    )
     {
         $this->postRepository = $postRepository;
+        $this->voteRepository = $voteRepository;
     }
 
     public function index()

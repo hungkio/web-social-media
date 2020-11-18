@@ -18,4 +18,9 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class, 'post_id', 'id');
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class, 'post_id', 'id');
+    }
 }
