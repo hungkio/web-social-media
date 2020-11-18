@@ -33,11 +33,12 @@
 
             <h1>Create post</h1>
 
-            <form action="{{ route('post.store') }}" method="POST">
+            <form action="{{ route('post.update') }}" method="POST">
                 @csrf
+                <input type="hidden" name="id" value="{{ $data->id }}">
                 <div class="form-group">
                     <label for="title">Title <span class="require">*</span></label>
-                    <input type="text" class="form-control" name="title"/>
+                    <input type="text" class="form-control" name="title" value="{{ $data->title }}"/>
                     @error('title')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -45,7 +46,7 @@
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea rows="5" class="form-control" name="content" id="summernote"></textarea>
+                    <textarea rows="5" class="form-control" name="content" id="summernote">{{ $data->content }}</textarea>
                     @error('content')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -53,7 +54,7 @@
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
-                        Create
+                        Update
                     </button>
                     <button class="btn btn-default">
                         <a href="{{ route('post.my_post') }}">Cancel</a>

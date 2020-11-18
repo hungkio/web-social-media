@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\VoteRepository;
+use App\Vote;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Repositories\PostRepository;
@@ -23,8 +24,9 @@ class PostController extends Controller
 
     public function index()
     {
+        $data = $this->postRepository->getAll();
         return view('home', [
-            'data' => ''
+            'data' => $data ?? ''
         ]);
     }
 
@@ -50,10 +52,38 @@ class PostController extends Controller
         ]);
         try {
             $this->postRepository->create($data);
-            //redirect to detail post (comment)
-            return back()->with('success', 'Post created success');
+            return redirect()->route('post.my_post');
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
+            return back()->with('error', $exception->getMessage());
+        }
+    }
+
+    public function edit($id)
+    {
+        $data = $this->postRepository->find($id);
+        return view('posts.edit', ['data' => $data]);
+    }
+
+    public function update(CreatePostRequest $request)
+    {
+        $data = $request->only('title', 'content');
+        $data = array_merge($data, [
+            'thead_id' => $request->thread_id ?? 0
+        ]);
+        try {
+            $this->postRepository->update($request->id, $data);
+            return redirect()->route('post.my_post');
+        } catch (\Exception $exception) {
+            return back()->with('error', $exception->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->postRepository->delete($id);
+            return back();
+        } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
         }
     }

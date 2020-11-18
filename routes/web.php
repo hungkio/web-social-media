@@ -17,12 +17,17 @@ Auth::routes();
 
 Route::get('/', 'PostController@index')->name('home');
 
-Route::prefix('post')->name('post.')->group(function () {
-    Route::get('/create', 'PostController@create')->name('create');
-    Route::post('/store', 'PostController@store')->name('store');
-    Route::get('/my', 'PostController@MyPost')->name('my_post');
-});
+Route::group(['middleware' => ['auth']], function () {
+    Route::prefix('post')->name('post.')->group(function () {
+        Route::get('/create', 'PostController@create')->name('create');
+        Route::post('/store', 'PostController@store')->name('store');
+        Route::get('/delete/{id}', 'PostController@delete')->name('delete');
+        Route::get('/edit/{id}', 'PostController@edit')->name('edit');
+        Route::post('/update', 'PostController@update')->name('update');
+        Route::get('/my', 'PostController@MyPost')->name('my_post');
+    });
 
-Route::prefix('vote')->name('vote.')->group(function () {
-    Route::post('/update', 'VoteController@update')->name('update');
+    Route::prefix('vote')->name('vote.')->group(function () {
+        Route::post('/update', 'VoteController@update')->name('update');
+    });
 });
