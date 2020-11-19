@@ -7,19 +7,23 @@ use App\Vote;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Repositories\PostRepository;
+use App\Http\Repositories\CommentRepository;
 
 class PostController extends Controller
 {
     protected $postRepository;
     protected $voteRepository;
+    protected $commentRepository;
 
     public function __construct(
         PostRepository $postRepository,
-        VoteRepository $voteRepository
+        VoteRepository $voteRepository,
+        CommentRepository $commentRepository
     )
     {
         $this->postRepository = $postRepository;
         $this->voteRepository = $voteRepository;
+        $this->commentRepository = $commentRepository;
     }
 
     public function index()
@@ -85,6 +89,31 @@ class PostController extends Controller
             return back();
         } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
+        }
+    }
+
+    public function comment($id)
+    {
+        $data = $this->postRepository->find($id);
+        if ($data->comments) {
+            $comments = $this->commentRepository->formatComment($data->comments);
+        }
+        return view('posts.comment', [
+            'post' => $data,
+            'comments' => @$comments,
+        ]);
+    }
+
+    public function saveComment(Request $request)
+    {
+        try {
+            $data = $request->only('content', 'post_id', 'parent', 'user_reply');
+            if ($data['content'] != '') {
+                $this->commentRepository->store(array_merge(['user_id' => auth()->id()], $data));
+                return response()->json(['success' => 'Comment has been saved']);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
         }
     }
 }

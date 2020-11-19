@@ -54,66 +54,117 @@
                 </div>
             </button>
 
-            <button type="button" class='btn float-right'>
+            <a href="{{ route('post.comment', $post->id) }}" type="button" class='btn float-right'>
                 <i class="far fa-comment-alt"></i>
-                {{ $post->comments->count() ?? 0 }} Comments
-            </button>
+                @if($post->comments->count())
+                    @if($post->comments->count() > 1)
+                        {!! '<span class="count_comment">' . $post->comments->count() . '</span> Comments' !!}
+                    @else
+                        {!! '<span class="count_comment">' . $post->comments->count() . '</span> Comment' !!}
+                    @endif
+                @else
+                    <span class="count_comment">0</span> Comment
+                @endif
+            </a>
         </div>
     </div>
-    {{--                        <div class="post-footer">--}}
-    {{--                            <div class="input-group">--}}
-    {{--                                <input class="form-control" placeholder="Add a comment" type="text">--}}
-    {{--                                <span class="input-group-addon"><a href="#"><i class="fa fa-edit"></i></a></span>--}}
-    {{--                            </div>--}}
-    {{--                            <ul class="comments-list">--}}
-    {{--                                <li class="comment">--}}
-    {{--                                    <a class="pull-left" href="#">--}}
-    {{--                                        <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg"--}}
-    {{--                                             alt="avatar">--}}
-    {{--                                    </a>--}}
-    {{--                                    <div class="comment-body">--}}
-    {{--                                        <div class="comment-heading">--}}
-    {{--                                            <h4 class="user">Gavino Free</h4>--}}
-    {{--                                            <h5 class="time">5 minutes ago</h5>--}}
-    {{--                                        </div>--}}
-    {{--                                        <p>Sure, oooooooooooooooohhhhhhhhhhhhhhhh</p>--}}
-    {{--                                    </div>--}}
-    {{--                                    <ul class="comments-list">--}}
-    {{--                                        <li class="comment">--}}
-    {{--                                            <a class="pull-left" href="#">--}}
-    {{--                                                <img class="avatar" src="https://bootdey.com/img/Content/user_3.jpg"--}}
-    {{--                                                     alt="avatar">--}}
-    {{--                                            </a>--}}
-    {{--                                            <div class="comment-body">--}}
-    {{--                                                <div class="comment-heading">--}}
-    {{--                                                    <h4 class="user">Ryan Haywood</h4>--}}
-    {{--                                                    <h5 class="time">3 minutes ago</h5>--}}
-    {{--                                                </div>--}}
-    {{--                                                <p>Relax my friend</p>--}}
-    {{--                                            </div>--}}
-    {{--                                        </li>--}}
-    {{--                                        <li class="comment">--}}
-    {{--                                            <a class="pull-left" href="#">--}}
-    {{--                                                <img class="avatar" src="https://bootdey.com/img/Content/user_2.jpg"--}}
-    {{--                                                     alt="avatar">--}}
-    {{--                                            </a>--}}
-    {{--                                            <div class="comment-body">--}}
-    {{--                                                <div class="comment-heading">--}}
-    {{--                                                    <h4 class="user">Gavino Free</h4>--}}
-    {{--                                                    <h5 class="time">3 minutes ago</h5>--}}
-    {{--                                                </div>--}}
-    {{--                                                <p>Ok, cool.</p>--}}
-    {{--                                            </div>--}}
-    {{--                                        </li>--}}
-    {{--                                        <a class="pull-left" href="#">--}}
-    {{--                                            <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg"--}}
-    {{--                                                 alt="avatar">--}}
-    {{--                                        </a>--}}
-    {{--                                        <input class='reply' placeholder="write ur reply..." type="text">--}}
+    @if(isset($has_comment) && $comments)
+        <div class="post-footer">
+            <div class="input-group">
+                <input class="form-control common-comment" placeholder="Add a comment" type="text">
+            </div>
+            <ul class="comments-list">
+                <li class="comment new-comment"></li>
+                @foreach($comments as $comment)
+                    <li class="comment comment-reply-top">
+                        <a class="pull-left" href="#">
+                            <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg"
+                                 alt="avatar">
+                        </a>
+                        <div class="comment-body">
+                            <div class="comment-heading">
+                                <h4 class="user">{{ $comment->user->name ?? '' }}</h4>
+                                <h5 class="time">5 minutes ago</h5>
+                            </div>
+                            <p class="mb-0">{{ $comment->content ?? '' }}</p>
+                            <div class="buttons">
+                                <button type="button" class='btn upvote'>
+                                    <i class="far fa-thumbs-up"></i><span
+                                        class="count-upvote">0</span>
+                                    Up Vote
+                                </button>
 
+                                <button type="button" class='btn downvote'>
+                                    <i class="far fa-thumbs-down"></i><span
+                                        class="count-downvote">0</span>
+                                    Down vote
+                                </button>
 
-    {{--                                    </ul>--}}
-    {{--                                </li>--}}
-    {{--                            </ul>--}}
-    {{--                        </div>--}}
+                                <button type="button" class='btn reply' data-comment_id="{{ $comment->id }}">
+                                    <i class="far fa-comment-alt"></i>Reply
+                                </button>
+                            </div>
+                            <span class="reply-append d-none">
+                                <a class="pull-left" href="#">
+                                    <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg" alt="avatar">
+                                </a>
+                                <input class='reply' placeholder="write ur reply..." type="text"
+                                       data-parent_id="{{ $comment->id }}">
+                            </span>
+                        </div>
+                        <ul class="comments-list">
+                            <li class="comment reply-comment"></li>
+                            @if(isset($comment->sub_comment))
+                                <?php $comments = $comment->sub_comment; ?>
+                                @foreach($comments as $sub_comment)
+                                    <li class="comment">
+                                        <a class="pull-left" href="#">
+                                            <img class="avatar" src="https://bootdey.com/img/Content/user_2.jpg"
+                                                 alt="avatar">
+                                        </a>
+                                        <div class="comment-body">
+                                            <div class="comment-heading">
+                                                <h4 class="user">{{ $sub_comment->user->name ?? '' }}</h4>
+                                                <h5 class="time">3 minutes ago</h5>
+                                            </div>
+                                            <p class="mb-0"><b>{{ $sub_comment->userReply->name ?? '' }} </b>{{ $sub_comment->content ?? '' }}</p>
+                                            <div class="buttons">
+                                                <button type="button" class='btn upvote'>
+                                                    <i class="far fa-thumbs-up"></i><span
+                                                        class="count-upvote">0</span>
+                                                    Up Vote
+                                                </button>
+
+                                                <button type="button" class='btn downvote'>
+                                                    <i class="far fa-thumbs-down"></i><span
+                                                        class="count-downvote">0</span>
+                                                    Down vote
+                                                </button>
+
+                                                <button type="button" class='btn reply'
+                                                        data-comment_id="{{ $sub_comment->id }}">
+                                                    <i class="far fa-comment-alt"></i>Reply
+                                                </button>
+                                            </div>
+                                            <span class="reply-append d-none">
+                                                <a class="pull-left" href="#">
+                                                    <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg"
+                                                         alt="avatar">
+                                                </a>
+                                                <input class='reply' placeholder="write ur reply..." type="text"
+                                                       data-parent_id="{{ $comment->id }}"
+                                                       data-user_reply="{{ $sub_comment->user_id }}"
+                                                       data-user_reply_name="{{ $sub_comment->user->name ?? '' }}"
+                                                >
+                                            </span>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 </div>

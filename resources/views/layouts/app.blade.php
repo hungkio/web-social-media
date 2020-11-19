@@ -6,11 +6,13 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="auth_id" content="{{ auth()->id() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.blockUI.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,7 +26,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img src="{{ asset('logo/redit-logo.png') }}" alt="redit">
                 </a>
                 <a href="http://{{ request()->getHost() }}/chatify" title="Messages" class="mr-5"><i class="fab fa-facebook-messenger"></i></a>
                 <a href="{{ route('post.create') }}" title="Create Post" class="mr-5"><i class="fas fa-pen"></i></a>
