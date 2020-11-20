@@ -8,22 +8,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Repositories\PostRepository;
 use App\Http\Repositories\CommentRepository;
+use App\Http\Repositories\UserRepository;
 
 class PostController extends Controller
 {
     protected $postRepository;
     protected $voteRepository;
     protected $commentRepository;
+    protected $userRepository;
 
     public function __construct(
         PostRepository $postRepository,
         VoteRepository $voteRepository,
-        CommentRepository $commentRepository
+        CommentRepository $commentRepository,
+        UserRepository $userRepository
     )
     {
         $this->postRepository = $postRepository;
         $this->voteRepository = $voteRepository;
         $this->commentRepository = $commentRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -96,7 +100,8 @@ class PostController extends Controller
     {
         $data = $this->postRepository->find($id);
         if ($data->comments) {
-            $comments = $this->commentRepository->formatComment($data->comments);
+            $comments = $this->postRepository->diffTime($data->comments);
+            $comments = $this->commentRepository->formatComment($comments);
         }
         return view('posts.comment', [
             'post' => $data,
@@ -125,5 +130,13 @@ class PostController extends Controller
         } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
         }
+    }
+
+    public function userPost($id)
+    {
+        $data = $this->userRepository->find($id);
+        return view('home', [
+            'data' => $data->post ?? ''
+        ]);
     }
 }

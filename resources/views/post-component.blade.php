@@ -6,7 +6,7 @@
         </div>
         <div class="pull-left meta">
             <div class="title h5">
-                <a href="#"><b>{{ $post->user->name ?? '' }}</b></a>
+                <a href="{{ route('post.user_post', $post->user->id) }}"><b>{{ $post->user->name ?? '' }}</b></a>
                 made a post.
             </div>
             <h6 class="text-muted time">{{ $post->diff_time ?? '' }}</h6>
@@ -82,7 +82,7 @@
                         <div class="comment-body">
                             <div class="comment-heading">
                                 <h4 class="user">{{ $comment->user->name ?? '' }}</h4>
-                                <h5 class="time">5 minutes ago</h5>
+                                <h5 class="time">{{ $comment->diff_time }}</h5>
                             </div>
                             <p class="mb-0">{{ $comment->content ?? '' }}</p>
                             <div class="buttons">
@@ -135,7 +135,7 @@
                                         <div class="comment-body">
                                             <div class="comment-heading">
                                                 <h4 class="user">{{ $sub_comment->user->name ?? '' }}</h4>
-                                                <h5 class="time">3 minutes ago</h5>
+                                                <h5 class="time">{{ $sub_comment->diff_time }}</h5>
                                             </div>
                                             <p class="mb-0"><b>{{ $sub_comment->userReply->name ?? '' }} </b>{{ $sub_comment->content ?? '' }}</p>
                                             <div class="buttons">
