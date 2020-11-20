@@ -33,51 +33,51 @@
         $(function () {
                 if ($('meta[name="auth_id"]').attr('content')) {
                     $('.upvote').click(function () {
-                        let post_id = $(this).closest('.post-description').data('idpost')
+                        let post_id = $(this).closest('.panel').data('idpost')
                         if ($(this).hasClass('text-blue')) {
                             $(this).removeClass('text-blue')
                             update_upvote(post_id, {{\App\Vote::REMOVE_VOTE}})
 
-                            let count_upvote = parseInt($(this).closest('.post-description').find('.count-upvote').html())
-                            $(this).closest('.post-description').find('.count-upvote').html((count_upvote - 1 ?? 0))
+                            let count_upvote = parseInt($(this).find('.count-upvote').html())
+                            $(this).find('.count-upvote').html((count_upvote - 1 ?? 0))
                         } else {
                             $(this).addClass('text-blue')
 
                             update_upvote(post_id, {{\App\Vote::UP_VOTE}})
 
-                            let count_upvote = parseInt($(this).closest('.post-description').find('.count-upvote').html())
-                            $(this).closest('.post-description').find('.count-upvote').html(count_upvote + 1)
+                            let count_upvote = parseInt($(this).find('.count-upvote').html())
+                            $(this).find('.count-upvote').html(count_upvote + 1)
 
-                            if ($(this).closest('.post-description').find('.downvote').hasClass('text-danger')) {
-                                $(this).closest('.post-description').find('.downvote').removeClass('text-danger')
+                            if ($(this).closest('.buttons').find('.downvote').hasClass('text-danger')) {
+                                $(this).closest('.buttons').find('.downvote').removeClass('text-danger')
 
-                                let count_downvote = parseInt($(this).closest('.post-description').find('.count-downvote').html())
-                                $(this).closest('.post-description').find('.count-downvote').html(count_downvote - 1)
+                                let count_downvote = parseInt($(this).closest('.buttons').find('.count-downvote').html())
+                                $(this).closest('.buttons').find('.count-downvote').html(count_downvote - 1)
                             }
                         }
 
                     })
 
                     $('.downvote').click(function () {
-                        let post_id = $(this).closest('.post-description').data('idpost')
+                        let post_id = $(this).closest('.panel').data('idpost')
                         if ($(this).hasClass('text-danger')) {
                             $(this).removeClass('text-danger')
                             update_upvote(post_id, {{\App\Vote::REMOVE_VOTE}})
 
-                            let count_downvote = parseInt($(this).closest('.post-description').find('.count-downvote').html())
-                            $(this).closest('.post-description').find('.count-downvote').html((count_downvote - 1 ?? 0))
+                            let count_downvote = parseInt($(this).find('.count-downvote').html())
+                            $(this).find('.count-downvote').html((count_downvote - 1 ?? 0))
                         } else {
                             $(this).addClass('text-danger')
                             update_upvote(post_id, {{\App\Vote::DOWN_VOTE}})
 
-                            let count_downvote = parseInt($(this).closest('.post-description').find('.count-downvote').html())
-                            $(this).closest('.post-description').find('.count-downvote').html(count_downvote + 1)
+                            let count_downvote = parseInt($(this).find('.count-downvote').html())
+                            $(this).find('.count-downvote').html(count_downvote + 1)
 
-                            if ($(this).closest('.post-description').find('.upvote').hasClass('text-blue')) {
-                                $(this).closest('.post-description').find('.upvote').removeClass('text-blue')
+                            if ($(this).closest('.buttons').find('.upvote').hasClass('text-blue')) {
+                                $(this).closest('.buttons').find('.upvote').removeClass('text-blue')
 
-                                let count_upvote = parseInt($(this).closest('.post-description').find('.count-upvote').html())
-                                $(this).closest('.post-description').find('.count-upvote').html(count_upvote - 1)
+                                let count_upvote = parseInt($(this).closest('.buttons').find('.count-upvote').html())
+                                $(this).closest('.buttons').find('.count-upvote').html(count_upvote - 1)
                             }
                         }
 

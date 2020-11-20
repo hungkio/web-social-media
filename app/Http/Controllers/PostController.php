@@ -86,7 +86,7 @@ class PostController extends Controller
     {
         try {
             $this->postRepository->delete($id);
-            return back();
+            return redirect()->route('post.my_post');
         } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
         }
@@ -114,6 +114,16 @@ class PostController extends Controller
             }
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()]);
+        }
+    }
+
+    public function deleteComment($id)
+    {
+        try {
+            $this->commentRepository->delete($id);
+            return back()->with('success', 'Comment has been deleted');
+        } catch (\Exception $exception) {
+            return back()->with('error', $exception->getMessage());
         }
     }
 }

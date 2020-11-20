@@ -1,4 +1,4 @@
-<div class="panel panel-white post panel-shadow">
+<div class="panel panel-white post panel-shadow"  data-idpost="{{ $post->id }}">
     <div class="post-heading">
         <div class="pull-left image">
             <img src="https://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar"
@@ -12,21 +12,21 @@
             <h6 class="text-muted time">{{ $post->diff_time ?? '' }}</h6>
         </div>
     </div>
-    <div class="post-description" style="padding-top: 0" data-idpost="{{ $post->id }}">
+    <div class="post-description" style="padding-top: 0">
         <h3>{{ $post->title ?? '' }}</h3>
         {!! $post->content ?? '' !!}
         <div class="buttons">
             <button type="button" class='btn upvote
-@if($post->votes()->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'>
+@if($post->votes()->whereNull('comment_id')->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'>
                 <i class="far fa-thumbs-up"></i><span
-                    class="count-upvote">{{ $post->votes()->where('type', \App\Vote::UP_VOTE)->count() ?? 0 }}</span>
+                    class="count-upvote">{{ $post->votes()->whereNull('comment_id')->where('type', \App\Vote::UP_VOTE)->count() ?? 0 }}</span>
                 Up Vote
             </button>
 
             <button type="button" class='btn downvote
-@if($post->votes()->where('type', \App\Vote::DOWN_VOTE)->get()->contains('user_id', auth()->id())) text-danger @endif'>
+@if($post->votes()->whereNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->get()->contains('user_id', auth()->id())) text-danger @endif'>
                 <i class="far fa-thumbs-down"></i><span
-                    class="count-downvote">{{ $post->votes()->where('type', \App\Vote::DOWN_VOTE)->count() ?? 0 }}</span>
+                    class="count-downvote">{{ $post->votes()->whereNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->count() ?? 0 }}</span>
                 Down vote
             </button>
 
@@ -88,21 +88,33 @@
                             </div>
                             <p class="mb-0">{{ $comment->content ?? '' }}</p>
                             <div class="buttons">
-                                <button type="button" class='btn upvote'>
+                                <button type="button" class='btn upvote
+@if($comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'
+                                        data-comment_id="{{ $comment->id }}">
                                     <i class="far fa-thumbs-up"></i><span
-                                        class="count-upvote">0</span>
+                                        class="count-upvote">{{ $comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::UP_VOTE)->count() ?? 0 }}</span>
                                     Up Vote
                                 </button>
 
-                                <button type="button" class='btn downvote'>
+                                <button type="button" class='btn downvote
+@if($comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->get()->contains('user_id', auth()->id())) text-danger @endif'
+                                        data-comment_id="{{ $comment->id }}">
                                     <i class="far fa-thumbs-down"></i><span
-                                        class="count-downvote">0</span>
+                                        class="count-downvote">{{ $comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->count() ?? 0 }}</span>
                                     Down vote
                                 </button>
 
                                 <button type="button" class='btn reply' data-comment_id="{{ $comment->id }}">
                                     <i class="far fa-comment-alt"></i>Reply
                                 </button>
+
+                                @if($post->user_id == auth()->id() || $comment->user_id == auth()->id())
+                                    <button type="button" class='btn float-right delete_comment'>
+                                        <a href="{{ route('post.delete_comment', $comment->id) }}">
+                                            <i class="far fa-trash-alt"></i>Delete
+                                        </a>
+                                    </button>
+                                @endif
                             </div>
                             <span class="reply-append d-none">
                                 <a class="pull-left" href="#">
@@ -129,15 +141,19 @@
                                             </div>
                                             <p class="mb-0"><b>{{ $sub_comment->userReply->name ?? '' }} </b>{{ $sub_comment->content ?? '' }}</p>
                                             <div class="buttons">
-                                                <button type="button" class='btn upvote'>
+                                                <button type="button" class='btn upvote
+@if($sub_comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'
+                                                        data-comment_id="{{ $sub_comment->id }}">
                                                     <i class="far fa-thumbs-up"></i><span
-                                                        class="count-upvote">0</span>
+                                                        class="count-upvote">{{ $sub_comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::UP_VOTE)->count() ?? 0 }}</span>
                                                     Up Vote
                                                 </button>
 
-                                                <button type="button" class='btn downvote'>
+                                                <button type="button" class='btn downvote
+@if($sub_comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->get()->contains('user_id', auth()->id())) text-danger @endif'
+                                                        data-comment_id="{{ $sub_comment->id }}">
                                                     <i class="far fa-thumbs-down"></i><span
-                                                        class="count-downvote">0</span>
+                                                        class="count-downvote">{{ $sub_comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->count() ?? 0 }}</span>
                                                     Down vote
                                                 </button>
 
@@ -145,6 +161,14 @@
                                                         data-comment_id="{{ $sub_comment->id }}">
                                                     <i class="far fa-comment-alt"></i>Reply
                                                 </button>
+
+                                                @if($post->user_id == auth()->id() || $sub_comment->user_id == auth()->id())
+                                                    <button type="button" class='btn float-right delete_comment'>
+                                                        <a href="{{ route('post.delete_comment', $sub_comment->id) }}">
+                                                            <i class="far fa-trash-alt"></i>Delete
+                                                        </a>
+                                                    </button>
+                                                @endif
                                             </div>
                                             <span class="reply-append d-none">
                                                 <a class="pull-left" href="#">

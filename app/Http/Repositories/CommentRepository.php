@@ -31,4 +31,9 @@ class CommentRepository
     {
         return Comment::create($data);
     }
+
+    public function delete($id)
+    {
+        return Comment::find($id)->delete();
+    }
 }

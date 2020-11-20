@@ -26,11 +26,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/update', 'PostController@update')->name('update');
         Route::get('/my', 'PostController@MyPost')->name('my_post');
         Route::post('/comments', 'PostController@saveComment')->name('save_comment');
+        Route::get('/delete_comment/{id}', 'PostController@deleteComment')->name('delete_comment');
     });
 
     Route::prefix('vote')->name('vote.')->group(function () {
         Route::post('/update', 'VoteController@update')->name('update');
     });
 });
+
 Route::get('/comments/{id}', 'PostController@comment')->name('post.comment');
 

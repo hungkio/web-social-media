@@ -23,6 +23,11 @@ class VoteController extends Controller
                 'post_id' => $request->post_id,
                 'type' => $request->vote
             ];
+
+            if ($request->comment_id) {
+                $data = array_merge($data, ['comment_id' => $request->comment_id]);
+            }
+
             $this->voteRepository->updateOrCreate($data);
         }
     }
