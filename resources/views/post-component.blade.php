@@ -48,9 +48,7 @@
                                           aria-haspopup="true" aria-expanded="false"><i
                                             class="far fa-share-square"></i>Share</span>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item url-post" data-url_post="{{ route('post.comment', $post->id) }}"><i class="fas fa-link"></i> Copy Link</a>
                 </div>
             </button>
 

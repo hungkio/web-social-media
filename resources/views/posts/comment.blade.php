@@ -30,6 +30,14 @@
     <script>
         $(function () {
             init()
+
+            $('.url-post').click(function () {
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val($(this).data('url_post')).select();
+                document.execCommand("copy");
+                $temp.remove();
+            })
         })
 
         function init() {
@@ -160,7 +168,6 @@
                                 }
                             }
                         }
-                        setTimeout(location.reload(), 2000);
                         return false;
                     }
                 });
@@ -196,6 +203,7 @@
                 },
                 complete: function () {
                     $('.post-footer').unblock()
+                    location.reload()
                 }
             })
         }
