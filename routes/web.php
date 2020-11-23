@@ -33,6 +33,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('vote')->name('vote.')->group(function () {
         Route::post('/update', 'VoteController@update')->name('update');
     });
+
+    Route::prefix('threads')->name('threads.')->group(function () {
+        Route::get('/{category_id?}', 'ThreadController@index')->name('index');
+        Route::get('post/{id?}', 'ThreadController@post')->name('post');
+    });
 });
 
 Route::get('/comments/{id}', 'PostController@comment')->name('post.comment');

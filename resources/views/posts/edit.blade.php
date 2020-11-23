@@ -35,6 +35,14 @@
 
             <form action="{{ route('post.update') }}" method="POST">
                 @csrf
+                @if($threads && $threads->isNotEmpty())
+                    <select class="form-control mb-3" id="exampleFormControlSelect1" name="thread_id">
+                        @foreach($threads as $thread)
+                            <option value="{{ $thread->id }}">{{ $thread->name }}</option>
+                        @endforeach
+                    </select>
+                @endif
+
                 <input type="hidden" name="id" value="{{ $data->id }}">
                 <div class="form-group">
                     <label for="title">Title <span class="require">*</span></label>

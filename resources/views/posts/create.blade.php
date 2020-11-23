@@ -28,42 +28,50 @@
         }
     </style>
     <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
 
-            <h1>Create post</h1>
+                <h1>Create post</h1>
 
-            <form action="{{ route('post.store') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="title">Title <span class="require">*</span></label>
-                    <input type="text" class="form-control" name="title"/>
-                    @error('title')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                <form action="{{ route('post.store') }}" method="POST">
+                    @csrf
+                    @if($threads && $threads->isNotEmpty())
+                        <select class="form-control mb-3" id="exampleFormControlSelect1" name="thread_id">
+                            @foreach($threads as $thread)
+                                <option value="{{ $thread->id }}">{{ $thread->name }}</option>
+                            @endforeach
+                        </select>
+                    @endif
 
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea rows="5" class="form-control" name="content" id="summernote"></textarea>
-                    @error('content')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <div class="form-group">
+                        <label for="title">Title <span class="require">*</span></label>
+                        <input type="text" class="form-control" name="title"/>
+                        @error('title')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        Create
-                    </button>
-                    <button class="btn btn-default">
-                        <a href="{{ route('post.my_post') }}">Cancel</a>
-                    </button>
-                </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea rows="5" class="form-control" name="content" id="summernote"></textarea>
+                        @error('content')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            </form>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            Create
+                        </button>
+                        <button class="btn btn-default">
+                            <a href="{{ route('post.my_post') }}">Cancel</a>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
-
-    </div>
     </div>
 @endsection
 @section('script')

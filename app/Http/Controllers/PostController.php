@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\ThreadRepository;
 use App\Http\Repositories\VoteRepository;
 use App\Vote;
 use Illuminate\Http\Request;
@@ -16,18 +17,21 @@ class PostController extends Controller
     protected $voteRepository;
     protected $commentRepository;
     protected $userRepository;
+    protected $threadRepository;
 
     public function __construct(
         PostRepository $postRepository,
         VoteRepository $voteRepository,
         CommentRepository $commentRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ThreadRepository $threadRepository
     )
     {
         $this->postRepository = $postRepository;
         $this->voteRepository = $voteRepository;
         $this->commentRepository = $commentRepository;
         $this->userRepository = $userRepository;
+        $this->threadRepository = $threadRepository;
     }
 
     public function index()
@@ -48,7 +52,10 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        $threads = $this->userRepository->find(auth()->id());
+        return view('posts.create', [
+            'threads' => $threads->threads ?? ''
+        ]);
     }
 
     public function store(CreatePostRequest $request)
@@ -56,7 +63,7 @@ class PostController extends Controller
         $data = $request->only('title', 'content');
         $data = array_merge($data, [
             'user_id' => auth()->id(),
-            'thead_id' => $request->thread_id ?? 0
+            'thread_id' => $request->thread_id ?? 0
         ]);
         try {
             $this->postRepository->create($data);
@@ -69,14 +76,18 @@ class PostController extends Controller
     public function edit($id)
     {
         $data = $this->postRepository->find($id);
-        return view('posts.edit', ['data' => $data]);
+        $threads = $this->userRepository->find(auth()->id());
+        return view('posts.edit', [
+            'data' => $data,
+            'threads' => $threads->threads ?? '',
+        ]);
     }
 
     public function update(CreatePostRequest $request)
     {
         $data = $request->only('title', 'content');
         $data = array_merge($data, [
-            'thead_id' => $request->thread_id ?? 0
+            'thread_id' => $request->thread_id ?? 0
         ]);
         try {
             $this->postRepository->update($request->id, $data);
@@ -89,6 +100,8 @@ class PostController extends Controller
     public function delete($id)
     {
         try {
+            $this->postRepository->find($id)->comments()->delete();
+            $this->postRepository->find($id)->votes()->delete();
             $this->postRepository->delete($id);
             return redirect()->route('post.my_post');
         } catch (\Exception $exception) {
@@ -125,6 +138,7 @@ class PostController extends Controller
     public function deleteComment($id)
     {
         try {
+            $this->commentRepository->find($id)->votes()->delete();
             $this->commentRepository->delete($id);
             return back()->with('success', 'Comment has been deleted');
         } catch (\Exception $exception) {

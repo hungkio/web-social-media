@@ -14,6 +14,7 @@ class VoteRepository
                     'post_id' => $data['post_id'],
                     'comment_id' => $data['comment_id'],
                     'user_id' => $data['user_id'],
+                    'thread_id' => $data['thread_id'],
                 ],
                 [
                     'type' => $data['type']
@@ -24,6 +25,7 @@ class VoteRepository
                 [
                     'post_id' => $data['post_id'],
                     'user_id' => $data['user_id'],
+                    'thread_id' => $data['thread_id'],
                 ],
                 [
                     'type' => $data['type']

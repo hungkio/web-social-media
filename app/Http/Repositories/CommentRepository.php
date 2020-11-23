@@ -36,4 +36,9 @@ class CommentRepository
     {
         return Comment::find($id)->delete();
     }
+
+    public function find($id)
+    {
+        return Comment::findOrFail($id);
+    }
 }
