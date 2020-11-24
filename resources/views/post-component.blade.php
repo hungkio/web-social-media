@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="post-description" style="padding-top: 0">
-        <h3>{{ $post->title ?? '' }}</h3>
+        <h4>{{ $post->title ?? '' }}</h4>
         {!! $post->content ?? '' !!}
         <div class="buttons">
             <button type="button" class='btn upvote

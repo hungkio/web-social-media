@@ -19,6 +19,26 @@
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <div class="container bootstrap snippets bootdey list-post">
+        <div class="col-sm-12">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <h3>{{ $thread->name }}</h3>
+                        </div>
+                    </div>
+                    <div class="float-right mt-3">
+                        @if($is_join)
+                            <button class="btn btn-default btn-join btn-success">leave
+                            </button>
+                        @else
+                            <button class="btn btn-default btn-join"><span class="glyphicon glyphicon-plus"></span> join
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             @if($data && $data->isNotEmpty())
@@ -98,6 +118,23 @@
                 document.execCommand("copy");
                 $temp.remove();
             })
+
+            $('.btn-join').click(function () {
+                let btn_text = $(this).text()
+                let thread_id = '{{ $thread->id }}'
+                if (btn_text.trim() == 'join') {
+                    $(this).html('leave');
+                    $(this).addClass('btn-success');
+                    let is_join = 1;
+                    join_thread(is_join, thread_id)
+                }
+                if (btn_text.trim() == 'leave') {
+                    $(this).html('<span class="glyphicon glyphicon-plus"></span> join')
+                    $(this).removeClass('btn-success')
+                    let is_join = 0;
+                    join_thread(is_join, thread_id)
+                }
+            })
         })
 
         function update_upvote(post_id, vote) {
@@ -110,6 +147,20 @@
                 },
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
             })
+        }
+
+        function join_thread(is_join, thread_id) {
+            if (thread_id) {
+                $.ajax({
+                    url: '{{ route('threads.join') }}',
+                    method: 'post',
+                    data: {
+                        'thread_id': thread_id,
+                        'is_join': is_join
+                    },
+                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+                })
+            }
         }
     </script>
 @endsection

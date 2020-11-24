@@ -28,8 +28,8 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('logo/redit-logo.png') }}" alt="redit">
                 </a>
-                <a href="http://{{ request()->getHost() }}/chatify" title="Messages" class="mr-5" style="color: #337ab7"><i class="fab fa-facebook-messenger"></i></a>
-                <a href="{{ route('post.create') }}" title="Create Post" class="mr-5" style="color: #337ab7"><i class="fas fa-pen"></i></a>
+                <a href="http://{{ request()->getHost() }}/chatify" title="Messages" class="mr-5 fs-16" style="color: #337ab7"><i class="fab fa-facebook-messenger"></i></a>
+                <a href="{{ route('post.create') }}" title="Create Post" class="mr-5 fs-16" style="color: #337ab7"><i class="fas fa-pen"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -62,8 +62,11 @@
                                     <a class="dropdown-item" href="{{ route('post.my_post') }}">
                                         {{ __('My Post') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('threads.my') }}">
+                                        {{ __('My Threads') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('threads.index') }}">
-                                        {{ __('Threads') }}
+                                        {{ __('Top Threads') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

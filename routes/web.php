@@ -35,8 +35,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('threads')->name('threads.')->group(function () {
-        Route::get('/{category_id?}', 'ThreadController@index')->name('index');
-        Route::get('post/{id?}', 'ThreadController@post')->name('post');
+        Route::get('/c/{category_id?}', 'ThreadController@index')->name('index');
+        Route::get('/create', 'ThreadController@create')->name('create');
+        Route::post('/store', 'ThreadController@store')->name('store');
+        Route::get('post/{id?}', 'ThreadController@getPost')->name('post');
+        Route::post('search', 'ThreadController@search')->name('search');
+        Route::post('join', 'ThreadController@join')->name('join');
+        Route::get('my/{category_id?}', 'ThreadController@getMyThread')->name('my');
     });
 });
 

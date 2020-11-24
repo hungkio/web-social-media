@@ -20,4 +20,9 @@ class Thread extends Model
     {
         return $this->hasMany(Vote::class, 'thread_id', 'id');
     }
+
+    public function members()
+    {
+        return $this->hasMany(ThreadMember::class, 'thread_id', 'id');
+    }
 }
