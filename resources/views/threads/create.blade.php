@@ -31,11 +31,12 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
 
-                <h1>Create Thread</h1>
+                <h1>Create Threads</h1>
 
                 <form action="{{ route('threads.store') }}" method="POST">
                     @csrf
                     @if($categories && $categories->isNotEmpty())
+                        <label for="title">Select a Category</label>
                         <select class="form-control mb-3" id="exampleFormControlSelect1" name="category_id">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>

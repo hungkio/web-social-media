@@ -28,18 +28,22 @@
                         </div>
                     </div>
                     <div class="float-right mt-3">
-                        @if($thread->user_id != auth()->id())
-                            @if($is_join)
-                                <button class="btn btn-default btn-join btn-success">Leave
-                                </button>
+                        @if(auth()->id())
+                            @if($thread->user_id != auth()->id())
+                                @if($is_join)
+                                    <button class="btn btn-default btn-join btn-success">Leave
+                                    </button>
+                                @else
+                                    <button class="btn btn-default btn-join"><span
+                                            class="glyphicon glyphicon-plus"></span>
+                                        Join
+                                    </button>
+                                @endif
                             @else
-                                <button class="btn btn-default btn-join"><span class="glyphicon glyphicon-plus"></span>
-                                    Join
-                                </button>
+                                <a href="{{ route('threads.delete', $thread->id) }}"
+                                   class="btn btn-danger delete-thread">Delete
+                                </a>
                             @endif
-                        @else
-                            <a href="{{ route('threads.delete', $thread->id) }}" class="btn btn-danger delete-thread">Delete
-                            </a>
                         @endif
                     </div>
                 </div>

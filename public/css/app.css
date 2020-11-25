@@ -11360,3 +11360,7 @@ a.text-dark:focus {
   }
 }
 
+.comment-reply-top button {
+    font-size: 12px!important;
+    padding: 0 2px;
+}

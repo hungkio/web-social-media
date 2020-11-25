@@ -36,6 +36,7 @@
                 <form action="{{ route('post.store') }}" method="POST">
                     @csrf
                     @if($threads && $threads->isNotEmpty())
+                        <label for="thread_id">Select a Threads to post into</label>
                         <select class="form-control mb-3" id="exampleFormControlSelect1" name="thread_id">
                             @foreach($threads as $thread)
                                 <option value="{{ $thread->id }}">{{ $thread->name }}</option>
