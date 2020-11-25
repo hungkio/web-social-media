@@ -20,19 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="485b0469-5f65-4da4-ab98-c50e3ed89d74" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/threads/home.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/threads/my.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/threads/create.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ThreadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ThreadController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Repositories/ThreadRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Repositories/ThreadRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Post.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Thread.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Thread.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ThreadMember.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ThreadMember.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style_threads.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style_threads.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/post-component.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/post-component.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/threads/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/threads/home.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/threads/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/threads/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/threads/my.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/threads/my.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,14 +147,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="HTML" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/threads/component" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/threads" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads\component" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads" />
+      <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads\component" />
       <recent name="C:\xampp\htdocs\web-social-media\app\Http\Repositories" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views\posts" />
@@ -186,7 +183,7 @@
       <workItem from="1605749472970" duration="23179000" />
       <workItem from="1605834388444" duration="14951000" />
       <workItem from="1606097178782" duration="14528000" />
-      <workItem from="1606182257659" duration="10900000" />
+      <workItem from="1606182257659" duration="22415000" />
     </task>
     <servers />
   </component>
@@ -222,9 +219,9 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="456" y="199" key="run.anything.popup/0.0.1600.860@0.0.1600.860" timestamp="1605688798168" />
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1606192836189">
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1606213283430">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1606192836189" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1606213283430" />
   </component>
 </project>

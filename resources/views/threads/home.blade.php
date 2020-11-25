@@ -24,16 +24,22 @@
                 <div class="post-heading">
                     <div class="pull-left meta">
                         <div class="title h5">
-                            <h3>{{ $thread->name }}</h3>
+                            <h3>{{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}</h3>
                         </div>
                     </div>
                     <div class="float-right mt-3">
-                        @if($is_join)
-                            <button class="btn btn-default btn-join btn-success">leave
-                            </button>
+                        @if($thread->user_id != auth()->id())
+                            @if($is_join)
+                                <button class="btn btn-default btn-join btn-success">Leave
+                                </button>
+                            @else
+                                <button class="btn btn-default btn-join"><span class="glyphicon glyphicon-plus"></span>
+                                    Join
+                                </button>
+                            @endif
                         @else
-                            <button class="btn btn-default btn-join"><span class="glyphicon glyphicon-plus"></span> join
-                            </button>
+                            <a href="{{ route('threads.delete', $thread->id) }}" class="btn btn-danger delete-thread">Delete
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -109,6 +115,12 @@
                         return false;
                     }
                 })
+
+                $('.delete-thread').click(function () {
+                    if (!confirm('Are you sure you want to delete this Thread?')) {
+                        return false;
+                    }
+                })
             }
 
             $('.url-post').click(function () {
@@ -122,14 +134,14 @@
             $('.btn-join').click(function () {
                 let btn_text = $(this).text()
                 let thread_id = '{{ $thread->id }}'
-                if (btn_text.trim() == 'join') {
-                    $(this).html('leave');
+                if (btn_text.trim() == 'Join') {
+                    $(this).html('Leave');
                     $(this).addClass('btn-success');
                     let is_join = 1;
                     join_thread(is_join, thread_id)
                 }
-                if (btn_text.trim() == 'leave') {
-                    $(this).html('<span class="glyphicon glyphicon-plus"></span> join')
+                if (btn_text.trim() == 'Leave') {
+                    $(this).html('<span class="glyphicon glyphicon-plus"></span> Join')
                     $(this).removeClass('btn-success')
                     let is_join = 0;
                     join_thread(is_join, thread_id)

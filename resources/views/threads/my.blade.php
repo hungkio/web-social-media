@@ -51,7 +51,7 @@
                     <div id="content" style="padding-top: 0">
                         @if($threads)
                             @foreach($threads as $thread)
-                                    <a href="{{ route('threads.post', $thread->id) }}"><h3>{{ $thread->name }}</h3></a>
+                                    <a href="{{ route('threads.post', $thread->id) }}"><h3>{{ ucwords($thread->name) }}</h3></a>
                                     <hr>
                                 @endforeach
                         @endif

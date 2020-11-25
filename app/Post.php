@@ -23,4 +23,9 @@ class Post extends Model
     {
         return $this->hasMany(Vote::class, 'post_id', 'id');
     }
+
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class, 'thread_id', 'id');
+    }
 }

@@ -52,7 +52,7 @@
                         @if($threads)
                             <?php $i = 1 ?>
                             @foreach($threads as $thread)
-                                    <a href="{{ route('threads.post', $thread->id) }}"><h3><span>{{ $i++ }} . </span> {{ $thread->name }}</h3></a>
+                                    <a href="{{ route('threads.post', $thread->id) }}"><h3><span>{{ $i++ }} . </span> {{ ucwords($thread->name) }}</h3></a>
                                     <hr>
                                 @endforeach
                         @endif

@@ -7,7 +7,7 @@
         <div class="pull-left meta">
             <div class="title h5">
                 <a href="{{ route('post.user_post', $post->user->id) }}"><b>{{ $post->user->name ?? '' }}</b></a>
-                made a post.
+                made a post. @if($post->thread) <i class="fas fa-caret-right"></i> <b><a href="{{ route('threads.post', $post->thread->id) }}">{{ $post->thread->name ?? '' }}</a></b> @endif
             </div>
             <h6 class="text-muted time">{{ $post->diff_time ?? '' }}</h6>
         </div>

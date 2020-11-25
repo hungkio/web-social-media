@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateThreadRequest;
+use App\ThreadMember;
 use Illuminate\Http\Request;
 use App\Http\Repositories\CategoryRepository;
 use App\Http\Repositories\ThreadRepository;
 use App\Http\Repositories\PostRepository;
+use Illuminate\Support\Facades\DB;
 
 class ThreadController extends Controller
 {
@@ -38,12 +41,26 @@ class ThreadController extends Controller
 
     public function create()
     {
-        return 1;
+        $categories = $this->categoryRepository->getAll();
+        return view('threads.create', [
+            'categories' => $categories
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(CreateThreadRequest $request)
     {
-        return 1;
+        $data = $request->only('category_id', 'description', 'name');
+        $data = array_merge($data, ['user_id' => auth()->id()]);
+        try {
+            $thread = $this->threadRepository->create($data);
+            ThreadMember::create([
+                'thread_id' => $thread->id,
+                'user_id' => auth()->id()
+            ]);
+            return redirect()->route('threads.my');
+        } catch (\Exception $exception) {
+            return back()->with(['error' => $exception->getMessage()]);
+        }
     }
 
     public function getPost($id)
@@ -105,5 +122,24 @@ class ThreadController extends Controller
             'categories' => $categories ?? '',
             'threads' => $threads ?? '',
         ]);
+    }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->threadRepository->find($id)->posts()->delete();
+            $this->threadRepository->find($id)->votes()->delete();
+            $this->threadRepository->find($id)->members()->delete();
+            $this->threadRepository->delete($id);
+
+            DB::commit();
+            return redirect()->route('threads.my');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with(['error' => $e->getMessage()]);
+        }
+
     }
 }
