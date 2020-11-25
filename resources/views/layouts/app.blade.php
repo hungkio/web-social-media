@@ -59,19 +59,22 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('user.edit') }}">
+                                        <i class="far fa-user"></i> {{ __('My Profile') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('post.my_post') }}">
-                                        {{ __('My Post') }}
+                                        <i class="far fa-newspaper"></i> {{ __('My Post') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('threads.my') }}">
-                                        {{ __('My Threads') }}
+                                        <i class="fas fa-users-cog"></i> {{ __('My Threads') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('threads.index') }}">
-                                        {{ __('Top Threads') }}
+                                        <i class="fas fa-users"></i> {{ __('Top Threads') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf

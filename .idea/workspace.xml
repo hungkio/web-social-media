@@ -20,11 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="485b0469-5f65-4da4-ab98-c50e3ed89d74" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/avatars/redit-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/profile-component.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/users/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/post-component.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/post-component.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/posts/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/posts/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/posts/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/posts/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/threads/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/threads/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/threads/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/threads/home.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,17 +150,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="HTML" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/threads" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\web-social-media\resources\views" />
+      <recent name="C:\xampp\htdocs\web-social-media\public" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads\component" />
       <recent name="C:\xampp\htdocs\web-social-media\app\Http\Repositories" />
-      <recent name="C:\xampp\htdocs\web-social-media\resources\views" />
-      <recent name="C:\xampp\htdocs\web-social-media\resources\views\posts" />
     </key>
   </component>
   <component name="RunManager">
@@ -178,7 +186,7 @@
       <workItem from="1605749472970" duration="23179000" />
       <workItem from="1605834388444" duration="14951000" />
       <workItem from="1606097178782" duration="14528000" />
-      <workItem from="1606182257659" duration="26064000" />
+      <workItem from="1606182257659" duration="36963000" />
     </task>
     <servers />
   </component>
@@ -202,21 +210,25 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="505" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1600.860@0.0.1600.860" timestamp="1606117910771" />
-    <state x="530" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1606120716653">
+    <state x="530" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1606295598992">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="530" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1600.860@0.0.1600.860" timestamp="1606120716653" />
+    <state x="530" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1600.860@0.0.1600.860" timestamp="1606295598992" />
     <state x="580" y="185" key="FileChooserDialogImpl" timestamp="1605667367070">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="580" y="185" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1605667367070" />
+    <state x="507" y="134" width="585" height="592" key="find.popup" timestamp="1606298344938">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="507" y="134" width="585" height="592" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1606298344938" />
     <state x="456" y="199" key="run.anything.popup" timestamp="1605688798168">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="456" y="199" key="run.anything.popup/0.0.1600.860@0.0.1600.860" timestamp="1605688798168" />
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1606277745691">
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup" timestamp="1606296992169">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1606277745691" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1606296992169" />
   </component>
 </project>

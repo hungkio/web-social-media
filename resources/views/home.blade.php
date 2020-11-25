@@ -19,14 +19,18 @@
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <div class="container bootstrap snippets bootdey list-post">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             @if($data && $data->isNotEmpty())
                 @foreach($data as $post)
                     @include('post-component')
                 @endforeach
             @endif
         </div>
+        @if(request('id') || isset($user))
+            <div class="col-sm-4">
+                @include('profile-component')
+            </div>
+        @endif
     </div>
 @endsection
 @section('script')
@@ -97,6 +101,23 @@
                 $temp.val($(this).data('url_post')).select();
                 document.execCommand("copy");
                 $temp.remove();
+            })
+            $('input[name=avatar]').change(function () {
+                if ($(this)[0].files[0].type == 'image/jpeg' || $(this)[0].files[0].type == 'image/png') {
+                    var formData = new FormData();
+                    formData.append('avatar', $(this)[0].files[0]);
+                    $.ajax({
+                        url: '{{ route('user.update') }}',
+                        method: 'post',
+                        data: formData,
+                        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            location.reload();
+                        }
+                    })
+                }
             })
         })
 

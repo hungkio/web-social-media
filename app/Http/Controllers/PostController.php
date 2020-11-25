@@ -45,16 +45,18 @@ class PostController extends Controller
     public function MyPost()
     {
         $data = $this->postRepository->getMyPost();
+        $user = auth()->user();
         return view('home', [
-            'data' => $data ?? ''
+            'data' => $data ?? '',
+            'user' => $user ?? ''
         ]);
     }
 
     public function create()
     {
-        $threads = $this->userRepository->find(auth()->id());
+        $user = $this->userRepository->find(auth()->id());
         return view('posts.create', [
-            'threads' => $threads->threads ?? ''
+            'threads' => $user->threads ?? ''
         ]);
     }
 
@@ -150,7 +152,8 @@ class PostController extends Controller
     {
         $data = $this->userRepository->find($id);
         return view('home', [
-            'data' => $data->post ?? ''
+            'data' => $data->post ?? '',
+            'user' => $data ?? '',
         ]);
     }
 }

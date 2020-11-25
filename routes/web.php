@@ -18,6 +18,11 @@ Auth::routes();
 Route::get('/', 'PostController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::post('/update', 'UserController@update')->name('update');
+        Route::get('/update', 'UserController@edit')->name('edit');
+    });
+
     Route::prefix('post')->name('post.')->group(function () {
         Route::get('/create', 'PostController@create')->name('create');
         Route::post('/store', 'PostController@store')->name('store');

@@ -1,7 +1,7 @@
 <div class="panel panel-white post panel-shadow"  data-idpost="{{ $post->id }}">
     <div class="post-heading">
         <div class="pull-left image">
-            <img src="https://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar"
+            <img src="{{ asset('storage/users-avatar/' . $post->user->avatar ?? '') }}" class="img-circle avatar"
                  alt="user profile image">
         </div>
         <div class="pull-left meta">

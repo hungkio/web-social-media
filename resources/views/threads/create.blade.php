@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
 
-                <h1>Create Threads</h1>
+                <h3>Create Threads</h3>
 
                 <form action="{{ route('threads.store') }}" method="POST">
                     @csrf

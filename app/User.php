@@ -10,19 +10,19 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function post()
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id')->latest();
+    }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'description', 'birth'
     ];
-
-    public function post()
-    {
-        return $this->hasMany(Post::class, 'user_id', 'id')->latest();
-    }
 
     public function threads()
     {
