@@ -71,7 +71,7 @@
 <div class="card_">
     <div class="avatar_edit">
         <img src="{{ asset('storage/users-avatar/' . $user->avatar) }}" alt="John">
-        @if(request('id') == auth()->id() || isset($user))
+        @if(request('id') == auth()->id() || $user->id == auth()->id())
             <label class="btn_avatar" for="upload-photo"><i class="fas fa-pen"></i></label>
             <input type="file" name="avatar" id="upload-photo" accept="image/*"/>
         @endif

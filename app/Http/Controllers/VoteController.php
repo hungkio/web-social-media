@@ -35,6 +35,12 @@ class VoteController extends Controller
             }
 
             $post = $this->postRepository->find($request->post_id);
+            if ($request->vote == Vote::UP_VOTE) {
+                $post->update(['up_vote' => ++$post->up_vote]);
+            }
+            if ($request->vote == Vote::REMOVE_VOTE && $post->up_vote > 0) {
+                $post->update(['up_vote' => --$post->up_vote]);
+            }
             $data = array_merge($data, ['thread_id' => $post->thread_id]);
 
             $this->voteRepository->updateOrCreate($data);

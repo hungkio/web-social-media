@@ -11,13 +11,15 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
-Route::get('/', 'PostController@index')->name('home');
+Route::get('/popular', 'PostController@popular')->name('popular');
+Route::get('/getPopular', 'PostController@getPopular')->name('getPopular');
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', 'PostController@index')->name('home');
+
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('/update', 'UserController@update')->name('update');
         Route::get('/update', 'UserController@edit')->name('edit');
@@ -50,8 +52,12 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
+
+Route::get('post/getPost', 'PostController@getPost')->name('post.getPost'); // ajax
+Route::get('post/getMyPost', 'PostController@getMyPost')->name('post.getMyPost'); // ajax
 Route::get('/comments/{id}', 'PostController@comment')->name('post.comment');
 Route::get('post/{id}', 'PostController@userPost')->name('post.user_post');
 Route::get('threads/post/{id}', 'ThreadController@getPost')->name('threads.post');
+Route::get('threads/postAjax/{id}', 'ThreadController@getPostAjax')->name('threads.postAjax');
 
 

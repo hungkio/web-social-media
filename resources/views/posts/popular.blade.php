@@ -37,7 +37,6 @@
     <script>
         $(function () {
             init()
-
             $('input[name=avatar]').change(function () {
                 if ($(this)[0].files[0].type == 'image/jpeg' || $(this)[0].files[0].type == 'image/png') {
                     var formData = new FormData();
@@ -62,7 +61,7 @@
                     let count_post = $('.list-post-append').find('.panel').length
                     if (count_post < {{ $data->total() ?? 0 }}) {
                         $.ajax({
-                            url: '{{ route('post.getPost') }}' + '?page=' + page,
+                            url: '{{ route('getPopular') }}' + '?page=' + page,
                             method: 'get',
                             success: function (res) {
                                 $('.list-post-append').append(res.data)

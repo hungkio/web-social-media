@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="col-sm-1"></div>
-        <div class="col-sm-10">
+        <div class="col-sm-10 list-post-append">
             @if($data && $data->isNotEmpty())
                 @foreach($data as $post)
                     @include('post-component')
@@ -62,6 +62,62 @@
 @section('script')
     <script>
         $(function () {
+            init()
+
+            $('.btn-join').click(function () {
+                let btn_text = $(this).text()
+                let thread_id = '{{ $thread->id }}'
+                if (btn_text.trim() == 'Join') {
+                    $(this).html('Leave');
+                    $(this).addClass('btn-success');
+                    let is_join = 1;
+                    join_thread(is_join, thread_id)
+                }
+                if (btn_text.trim() == 'Leave') {
+                    $(this).html('<span class="glyphicon glyphicon-plus"></span> Join')
+                    $(this).removeClass('btn-success')
+                    let is_join = 0;
+                    join_thread(is_join, thread_id)
+                }
+            })
+
+            $(window).scroll(function() {
+                let page = 1;
+                if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    page++;
+                    let count_post = $('.list-post-append').find('.panel').length
+                    console.log({{ $data->total() ?? 0 }})
+                    if (count_post < {{ $data->total() ?? 0 }}) {
+                        $.ajax({
+                            url: '{{ route('threads.postAjax', $thread->id) }}' + '?page=' + page,
+                            method: 'get',
+                            success: function (res) {
+                                $('.list-post-append').append(res.data)
+                                unbin_onclick()
+                                init()
+                            },
+                        })
+                    }
+                }
+            });
+        })
+
+        function unbin_onclick() {
+            $.each($(".upvote").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+            $.each($(".downvote").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+            $.each($(".delete_post").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+            $.each($(".url-post").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+        }
+
+        function init() {
             if ($('meta[name="auth_id"]').attr('content')) {
                 $('.upvote').click(function () {
                     let post_id = $(this).closest('.panel').data('idpost')
@@ -134,24 +190,7 @@
                 document.execCommand("copy");
                 $temp.remove();
             })
-
-            $('.btn-join').click(function () {
-                let btn_text = $(this).text()
-                let thread_id = '{{ $thread->id }}'
-                if (btn_text.trim() == 'Join') {
-                    $(this).html('Leave');
-                    $(this).addClass('btn-success');
-                    let is_join = 1;
-                    join_thread(is_join, thread_id)
-                }
-                if (btn_text.trim() == 'Leave') {
-                    $(this).html('<span class="glyphicon glyphicon-plus"></span> Join')
-                    $(this).removeClass('btn-success')
-                    let is_join = 0;
-                    join_thread(is_join, thread_id)
-                }
-            })
-        })
+        }
 
         function update_upvote(post_id, vote) {
             $.ajax({

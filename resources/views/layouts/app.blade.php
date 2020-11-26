@@ -25,9 +25,18 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('logo/redit-logo.png') }}" alt="redit">
-                </a>
+                @if(auth()->user())
+                    <a class="navbar-brand" href="{{ route('home') }}" title="redit">
+                        <img src="{{ asset('logo/redit-logo.png') }}" alt="redit">
+                    </a>
+                    <a class="navbar-brand" href="{{ route('popular') }}" title="popular" style="color: #337ab7">
+                        <i class="fas fa-fire-alt"></i>
+                    </a>
+                @else
+                    <a class="navbar-brand" href="{{ route('popular') }}" title="redit">
+                        <img src="{{ asset('logo/redit-logo.png') }}" alt="redit">
+                    </a>
+                @endif
                 <a href="http://{{ request()->getHost() }}/chatify" title="Messages" class="mr-5 fs-16" style="color: #337ab7"><i class="fab fa-facebook-messenger"></i></a>
                 <a href="{{ route('post.create') }}" title="Create Post" class="mr-5 fs-16" style="color: #337ab7"><i class="fas fa-pen"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Post;
+use App\ThreadMember;
 use Carbon\Carbon;
 
 class PostRepository
@@ -12,9 +13,31 @@ class PostRepository
         return Post::create($data);
     }
 
-    public function getAll()
+    public function getAll($paginate = null)
     {
-        $data = Post::latest()->get();
+        $threads = ThreadMember::where('user_id', auth()->id())->get();
+        $thread_ids = [];
+        if ($threads) {
+            foreach ($threads as $thread)
+            {
+                $thread_ids[] = $thread->thread_id;
+            }
+        }
+        if ($paginate) {
+            $data = Post::orWhere('user_id', auth()->id())->orWhereIn('thread_id', $thread_ids)->latest()->paginate($paginate);
+        } else {
+            $data = Post::orWhere('user_id', auth()->id())->orWhereIn('thread_id', $thread_ids)->latest()->get();
+        }
+        return $this->diffTime($data);
+    }
+
+    public function getPopular($paginate = null)
+    {
+        if ($paginate) {
+            $data = Post::orderBy('up_vote', 'desc')->paginate($paginate);
+        } else {
+            $data = Post::orderBy('up_vote', 'desc')->get();
+        }
         return $this->diffTime($data);
     }
 
@@ -23,9 +46,13 @@ class PostRepository
         return Post::findOrFail($id)->update($data);
     }
 
-    public function getMyPost()
+    public function getMyPost($paginate = null)
     {
-        $data = Post::where('user_id', auth()->id())->latest()->get();
+        if ($paginate) {
+            $data = Post::where('user_id', auth()->id())->latest()->paginate($paginate);
+        } else {
+            $data = Post::where('user_id', auth()->id())->latest()->get();
+        }
         return $this->diffTime($data);
     }
 
@@ -41,8 +68,7 @@ class PostRepository
 
     public function diffTime($data)
     {
-        foreach ($data as $post)
-        {
+        foreach ($data as $post) {
             $now = Carbon::now();
             $created_at = Carbon::parse($post->created_at);
 

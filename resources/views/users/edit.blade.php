@@ -117,7 +117,7 @@
                     <input type="hidden" name="id" value="{{ $user->id }}">
                     <div class="form-group">
                         <label for="name">Display name (require)</label>
-                        <input type="text" class="form-control" name="name" value="{{ old($user->name, 'name') }}"/>
+                        <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}"/>
                         @error('name')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -125,7 +125,7 @@
 
                     <div class="form-group">
                         <label for="description">About (optional)</label>
-                        <input class="form-control" name="description" value="{{ old($user->description, 'description') }}"/>
+                        <input class="form-control" name="description" value="{{ old('description', $user->description ?? '') }}"/>
                         @error('description')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
