@@ -76,7 +76,7 @@
                 @foreach($comments as $comment)
                     <li class="comment comment-reply-top">
                         <a class="pull-left" href="#">
-                            <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg"
+                            <img class="avatar" src="{{ asset('storage/users-avatar/' . $comment->user->avatar ?? '') }}"
                                  alt="avatar">
                         </a>
                         <div class="comment-body">
@@ -116,7 +116,7 @@
                             </div>
                             <span class="reply-append d-none">
                                 <a class="pull-left" href="#">
-                                    <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg" alt="avatar">
+                                    <img class="avatar" src="{{ asset('storage/users-avatar/' . $comment->user->avatar ?? '') }}" alt="avatar">
                                 </a>
                                 <input class='reply' placeholder="write ur reply..." type="text"
                                        data-parent_id="{{ $comment->id }}">
@@ -129,7 +129,7 @@
                                 @foreach($comments as $sub_comment)
                                     <li class="comment">
                                         <a class="pull-left" href="#">
-                                            <img class="avatar" src="https://bootdey.com/img/Content/user_2.jpg"
+                                            <img class="avatar" src="{{ asset('storage/users-avatar/' . $sub_comment->user->avatar ?? '') }}"
                                                  alt="avatar">
                                         </a>
                                         <div class="comment-body">
@@ -170,7 +170,7 @@
                                             </div>
                                             <span class="reply-append d-none">
                                                 <a class="pull-left" href="#">
-                                                    <img class="avatar" src="https://bootdey.com/img/Content/user_1.jpg"
+                                                    <img class="avatar" src="{{ asset('storage/users-avatar/' . $sub_comment->user->avatar ?? '') }}"
                                                          alt="avatar">
                                                 </a>
                                                 <input class='reply' placeholder="write ur reply..." type="text"
