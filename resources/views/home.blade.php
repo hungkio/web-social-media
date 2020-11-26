@@ -19,7 +19,7 @@
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <div class="container bootstrap snippets bootdey list-post">
-        <div class="col-sm-8">
+        <div class="col-sm-8 list-post-append">
             @if($data && $data->isNotEmpty())
                 @foreach($data as $post)
                     @include('post-component')
@@ -36,6 +36,45 @@
 @section('script')
     <script>
         $(function () {
+            init()
+
+            $('input[name=avatar]').change(function () {
+                if ($(this)[0].files[0].type == 'image/jpeg' || $(this)[0].files[0].type == 'image/png') {
+                    var formData = new FormData();
+                    formData.append('avatar', $(this)[0].files[0]);
+                    $.ajax({
+                        url: '{{ route('user.update') }}',
+                        method: 'post',
+                        data: formData,
+                        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+            $(window).scroll(function() {
+                let page = 1;
+                if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    page++;
+                    let count_post = $('.list-post-append').find('.panel').length
+                    if (count_post < {{ $data->total() ?? 0 }}) {
+                        $.ajax({
+                            url: '{{ route('post.getPost') }}' + '?page=' + page,
+                            method: 'get',
+                            success: function (res) {
+                                $('.list-post-append').append(res.data)
+                                init()
+                            },
+                        })
+                    }
+                }
+            });
+        })
+
+        function init() {
             if ($('meta[name="auth_id"]').attr('content')) {
                 $('.upvote').click(function () {
                     let post_id = $(this).closest('.panel').data('idpost')
@@ -102,24 +141,7 @@
                 document.execCommand("copy");
                 $temp.remove();
             })
-            $('input[name=avatar]').change(function () {
-                if ($(this)[0].files[0].type == 'image/jpeg' || $(this)[0].files[0].type == 'image/png') {
-                    var formData = new FormData();
-                    formData.append('avatar', $(this)[0].files[0]);
-                    $.ajax({
-                        url: '{{ route('user.update') }}',
-                        method: 'post',
-                        data: formData,
-                        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                            location.reload();
-                        }
-                    })
-                }
-            })
-        })
+        }
 
         function update_upvote(post_id, vote) {
             $.ajax({

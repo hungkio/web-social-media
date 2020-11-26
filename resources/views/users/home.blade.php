@@ -19,44 +19,18 @@
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <div class="container bootstrap snippets bootdey list-post">
-        <div class="col-sm-12">
-            <div class="panel panel-white post panel-shadow">
-                <div class="post-heading">
-                    <div class="pull-left meta">
-                        <div class="title h5">
-                            <h3>{{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}</h3>
-                        </div>
-                    </div>
-                    <div class="float-right mt-3">
-                        @if(auth()->id())
-                            @if($thread->user_id != auth()->id())
-                                @if($is_join)
-                                    <button class="btn btn-default btn-join btn-success">Leave
-                                    </button>
-                                @else
-                                    <button class="btn btn-default btn-join"><span
-                                            class="glyphicon glyphicon-plus"></span>
-                                        Join
-                                    </button>
-                                @endif
-                            @else
-                                <a href="{{ route('threads.delete', $thread->id) }}"
-                                   class="btn btn-danger delete-thread">Delete
-                                </a>
-                            @endif
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10 list-post-append">
+        <div class="col-sm-8 list-post-append">
             @if($data && $data->isNotEmpty())
                 @foreach($data as $post)
                     @include('post-component')
                 @endforeach
             @endif
         </div>
+        @if(request('id') || isset($user))
+            <div class="col-sm-4">
+                @include('profile-component')
+            </div>
+        @endif
     </div>
 @endsection
 @section('script')
@@ -64,34 +38,34 @@
         $(function () {
             init()
 
-            $('.btn-join').click(function () {
-                let btn_text = $(this).text()
-                let thread_id = '{{ $thread->id }}'
-                if (btn_text.trim() == 'Join') {
-                    $(this).html('Leave');
-                    $(this).addClass('btn-success');
-                    let is_join = 1;
-                    join_thread(is_join, thread_id)
-                }
-                if (btn_text.trim() == 'Leave') {
-                    $(this).html('<span class="glyphicon glyphicon-plus"></span> Join')
-                    $(this).removeClass('btn-success')
-                    let is_join = 0;
-                    join_thread(is_join, thread_id)
+            $('input[name=avatar]').change(function () {
+                if ($(this)[0].files[0].type == 'image/jpeg' || $(this)[0].files[0].type == 'image/png') {
+                    var formData = new FormData();
+                    formData.append('avatar', $(this)[0].files[0]);
+                    $.ajax({
+                        url: '{{ route('user.update') }}',
+                        method: 'post',
+                        data: formData,
+                        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            location.reload();
+                        }
+                    })
                 }
             })
-
             $(window).scroll(function() {
                 let page = 1;
                 if($(window).scrollTop() == $(document).height() - $(window).height()) {
                     page++;
                     let count_post = $('.list-post-append').find('.panel').length
-                    console.log({{ $data->total() ?? 0 }})
                     if (count_post < {{ $data->total() ?? 0 }}) {
                         $.ajax({
-                            url: '{{ route('threads.postAjax', $thread->id) }}' + '?page=' + page,
+                            url: '{{ route('post.getMyPost') }}' + '?page=' + page,
                             method: 'get',
                             success: function (res) {
+                                console.log(res)
                                 $('.list-post-append').append(res.data)
                                 init()
                             },
@@ -100,6 +74,7 @@
                 }
             });
         })
+
         function init() {
             if ($('meta[name="auth_id"]').attr('content')) {
                 $('.upvote').click(function () {
@@ -158,12 +133,6 @@
                         return false;
                     }
                 })
-
-                $('.delete-thread').click(function () {
-                    if (!confirm('Are you sure you want to delete this Thread?')) {
-                        return false;
-                    }
-                })
             }
 
             $('.url-post').click(function () {
@@ -185,20 +154,6 @@
                 },
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
             })
-        }
-
-        function join_thread(is_join, thread_id) {
-            if (thread_id) {
-                $.ajax({
-                    url: '{{ route('threads.join') }}',
-                    method: 'post',
-                    data: {
-                        'thread_id': thread_id,
-                        'is_join': is_join
-                    },
-                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-                })
-            }
         }
     </script>
 @endsection

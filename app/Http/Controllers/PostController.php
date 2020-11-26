@@ -36,20 +36,42 @@ class PostController extends Controller
 
     public function index()
     {
-        $data = $this->postRepository->getAll();
+        $data = $this->postRepository->getAll(3);
         return view('home', [
             'data' => $data ?? ''
         ]);
     }
 
+    public function getPost()
+    {
+        $data = $this->postRepository->getAll(3);
+        $html = '';
+        foreach ($data as $post)
+        {
+            $html .= view('post-component', compact('post'))->render();
+        }
+        return response()->json(['data' => $html]);
+    }
+
     public function MyPost()
     {
-        $data = $this->postRepository->getMyPost();
+        $data = $this->postRepository->getMyPost(3);
         $user = auth()->user();
-        return view('home', [
+        return view('users.home', [
             'data' => $data ?? '',
             'user' => $user ?? ''
         ]);
+    }
+
+    public function getMyPost()
+    {
+        $data = $this->postRepository->getMyPost(3);
+        $html = '';
+        foreach ($data as $post)
+        {
+            $html .= view('post-component', compact('post'))->render();
+        }
+        return response()->json(['data' => $html]);
     }
 
     public function create()
@@ -152,7 +174,7 @@ class PostController extends Controller
     {
         $data = $this->userRepository->find($id);
         return view('home', [
-            'data' => $data->post ?? '',
+            'data' => $data->post()->paginate(3) ?? '',
             'user' => $data ?? '',
         ]);
     }

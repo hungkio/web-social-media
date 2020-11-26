@@ -50,8 +50,12 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
+
+Route::get('post/getPost', 'PostController@getPost')->name('post.getPost'); // ajax
+Route::get('post/getMyPost', 'PostController@getMyPost')->name('post.getMyPost'); // ajax
 Route::get('/comments/{id}', 'PostController@comment')->name('post.comment');
 Route::get('post/{id}', 'PostController@userPost')->name('post.user_post');
 Route::get('threads/post/{id}', 'ThreadController@getPost')->name('threads.post');
+Route::get('threads/postAjax/{id}', 'ThreadController@getPostAjax')->name('threads.postAjax');
 
 

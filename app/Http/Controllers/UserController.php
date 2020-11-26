@@ -17,7 +17,7 @@ class UserController extends Controller
             'user' => $user
         ]);
     }
-    public function update(UpdateProfileRequest $request)
+    public function update(Request $request)
     {
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');

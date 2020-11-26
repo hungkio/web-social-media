@@ -66,7 +66,7 @@ class ThreadController extends Controller
     public function getPost($id)
     {
         $thread = $this->threadRepository->find($id);
-        $posts = $thread->posts;
+        $posts = $thread->posts()->paginate(3);
         if ($posts->isNotEmpty()) {
             $posts = $this->postRepository->diffTime($posts);
         }
@@ -85,6 +85,23 @@ class ThreadController extends Controller
             'thread' => $thread ?? '',
             'is_join' => $is_join,
         ]);
+    }
+
+    public function getPostAjax($id)
+    {
+        $thread = $this->threadRepository->find($id);
+        $posts = $thread->posts()->paginate(3);
+        $html = '';
+        if ($posts->isNotEmpty()) {
+            $posts = $this->postRepository->diffTime($posts);
+        }
+        foreach ($posts as $post)
+        {
+            $html .= view('post-component', [
+                'post' => $post,
+            ]);
+        }
+        return response()->json(['data' => $html]);
     }
 
     public function search(Request $request)
