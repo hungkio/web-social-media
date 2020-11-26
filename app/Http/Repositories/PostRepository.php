@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Post;
+use App\ThreadMember;
 use Carbon\Carbon;
 
 class PostRepository
@@ -14,10 +15,28 @@ class PostRepository
 
     public function getAll($paginate = null)
     {
+        $threads = ThreadMember::where('user_id', auth()->id())->get();
+        $thread_ids = [];
+        if ($threads) {
+            foreach ($threads as $thread)
+            {
+                $thread_ids[] = $thread->thread_id;
+            }
+        }
         if ($paginate) {
-            $data = Post::latest()->paginate($paginate);
+            $data = Post::orWhere('user_id', auth()->id())->orWhereIn('thread_id', $thread_ids)->latest()->paginate($paginate);
         } else {
-            $data = Post::latest()->get();
+            $data = Post::orWhere('user_id', auth()->id())->orWhereIn('thread_id', $thread_ids)->latest()->get();
+        }
+        return $this->diffTime($data);
+    }
+
+    public function getPopular($paginate = null)
+    {
+        if ($paginate) {
+            $data = Post::orderBy('up_vote', 'desc')->paginate($paginate);
+        } else {
+            $data = Post::orderBy('up_vote', 'desc')->get();
         }
         return $this->diffTime($data);
     }

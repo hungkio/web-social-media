@@ -11,13 +11,15 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
-Route::get('/', 'PostController@index')->name('home');
+Route::get('/popular', 'PostController@popular')->name('popular');
+Route::get('/getPopular', 'PostController@getPopular')->name('getPopular');
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', 'PostController@index')->name('home');
+
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('/update', 'UserController@update')->name('update');
         Route::get('/update', 'UserController@edit')->name('edit');

@@ -74,6 +74,25 @@ class PostController extends Controller
         return response()->json(['data' => $html]);
     }
 
+    public function popular()
+    {
+        $data = $this->postRepository->getPopular(3);
+        return view('posts.popular', [
+            'data' => $data ?? ''
+        ]);
+    }
+
+    public function getPopular()
+    {
+        $data = $this->postRepository->getPopular(3);
+        $html = '';
+        foreach ($data as $post)
+        {
+            $html .= view('post-component', compact('post'))->render();
+        }
+        return response()->json(['data' => $html]);
+    }
+
     public function create()
     {
         $user = $this->userRepository->find(auth()->id());
@@ -157,6 +176,7 @@ class PostController extends Controller
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()]);
         }
+        return false;
     }
 
     public function deleteComment($id)

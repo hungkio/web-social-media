@@ -67,6 +67,7 @@
                             success: function (res) {
                                 console.log(res)
                                 $('.list-post-append').append(res.data)
+                                unbin_onclick()
                                 init()
                             },
                         })
@@ -74,6 +75,21 @@
                 }
             });
         })
+
+        function unbin_onclick() {
+            $.each($(".upvote").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+            $.each($(".downvote").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+            $.each($(".delete_post").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+            $.each($(".url-post").unbind('click'), function (key, val) {
+                $(val).prop("onclick", null).off("click");
+            })
+        }
 
         function init() {
             if ($('meta[name="auth_id"]').attr('content')) {

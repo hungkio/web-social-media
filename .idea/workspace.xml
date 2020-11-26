@@ -20,16 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="485b0469-5f65-4da4-ab98-c50e3ed89d74" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/users/home.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_11_26_044124_add_count_vote_post.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/posts/popular.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PostController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ThreadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ThreadController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/VoteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/VoteController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Repositories/PostRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Repositories/PostRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Post.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/profile-component.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/profile-component.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/threads/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/threads/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/users/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/users/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/users/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/users/home.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -147,17 +148,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="HTML" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/users" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/posts" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\web-social-media\resources\views\posts" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views\users" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views" />
       <recent name="C:\xampp\htdocs\web-social-media\public" />
       <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads" />
-      <recent name="C:\xampp\htdocs\web-social-media\resources\views\threads\component" />
     </key>
   </component>
   <component name="RunManager">
@@ -184,7 +185,7 @@
       <workItem from="1605834388444" duration="14951000" />
       <workItem from="1606097178782" duration="14528000" />
       <workItem from="1606182257659" duration="37034000" />
-      <workItem from="1606355979495" duration="5144000" />
+      <workItem from="1606355979495" duration="13482000" />
     </task>
     <servers />
   </component>
