@@ -1,4 +1,4 @@
-<div class="panel panel-white post panel-shadow"  data-idpost="{{ $post->id }}">
+<div class="panel panel-white post panel-shadow" data-idpost="{{ $post->id }}">
     <div class="post-heading">
         <div class="pull-left image">
             <img src="{{ asset('storage/users-avatar/' . $post->user->avatar ?? '') }}" class="img-circle avatar"
@@ -7,7 +7,8 @@
         <div class="pull-left meta">
             <div class="title h5">
                 <a href="{{ route('post.user_post', $post->user->id) }}"><b>{{ $post->user->name ?? '' }}</b></a>
-                made a post. @if($post->thread) <i class="fas fa-caret-right"></i> <b><a href="{{ route('threads.post', $post->thread->id) }}">{{ $post->thread->name ?? '' }}</a></b> @endif
+                made a post. @if($post->thread) <i class="fas fa-caret-right"></i> <b><a
+                        href="{{ route('threads.post', $post->thread->id) }}">{{ $post->thread->name ?? '' }}</a></b> @endif
             </div>
             <h6 class="text-muted time">{{ $post->diff_time ?? '' }}</h6>
         </div>
@@ -17,14 +18,16 @@
         {!! $post->content ?? '' !!}
         <div class="buttons">
             <button type="button" class='btn upvote
-@if($post->votes()->whereNull('comment_id')->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'>
+@if($post->votes()->whereNull('comment_id')->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'
+                    @if(!auth()->user()) data-toggle="modal" data-target="#loginModal" @endif>
                 <i class="far fa-thumbs-up"></i><span
                     class="count-upvote">{{ $post->votes()->whereNull('comment_id')->where('type', \App\Vote::UP_VOTE)->count() ?? 0 }}</span>
                 Up Vote
             </button>
 
             <button type="button" class='btn downvote
-@if($post->votes()->whereNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->get()->contains('user_id', auth()->id())) text-danger @endif'>
+@if($post->votes()->whereNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->get()->contains('user_id', auth()->id())) text-danger @endif'
+                    @if(!auth()->user()) data-toggle="modal" data-target="#loginModal" @endif>
                 <i class="far fa-thumbs-down"></i><span
                     class="count-downvote">{{ $post->votes()->whereNull('comment_id')->where('type', \App\Vote::DOWN_VOTE)->count() ?? 0 }}</span>
                 Down vote
@@ -48,7 +51,8 @@
                                           aria-haspopup="true" aria-expanded="false"><i
                                             class="far fa-share-square"></i>Share</span>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item url-post" data-url_post="{{ route('post.comment', $post->id) }}"><i class="fas fa-link"></i> Copy Link</a>
+                    <a class="dropdown-item url-post" data-url_post="{{ route('post.comment', $post->id) }}"><i
+                            class="fas fa-link"></i> Copy Link</a>
                 </div>
             </button>
 
@@ -69,7 +73,7 @@
     @if(isset($has_comment) && $comments)
         <div class="post-footer">
             <div class="input-group">
-                <input class="form-control common-comment" placeholder="Add a comment" type="text">
+                <input class="form-control common-comment" placeholder="Add a comment" type="text" @if(!auth()->user()) readonly @endif>
             </div>
             <ul class="comments-list">
                 <li class="comment new-comment"></li>
@@ -137,7 +141,9 @@
                                                 <h4 class="user">{{ $sub_comment->user->name ?? '' }}</h4>
                                                 <h5 class="time">{{ $sub_comment->diff_time }}</h5>
                                             </div>
-                                            <p class="mb-0"><b>{{ $sub_comment->userReply->name ?? '' }} </b>{{ $sub_comment->content ?? '' }}</p>
+                                            <p class="mb-0">
+                                                <b>{{ $sub_comment->userReply->name ?? '' }} </b>{{ $sub_comment->content ?? '' }}
+                                            </p>
                                             <div class="buttons">
                                                 <button type="button" class='btn upvote
 @if($sub_comment->votes()->whereNotNull('comment_id')->where('type', \App\Vote::UP_VOTE)->get()->contains('user_id', auth()->id())) text-blue @endif'

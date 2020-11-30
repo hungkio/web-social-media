@@ -49,6 +49,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('search', 'ThreadController@search')->name('search');
         Route::post('join', 'ThreadController@join')->name('join');
         Route::get('my/{category_id?}', 'ThreadController@getMyThread')->name('my');
+
+        // route for threads member
+        Route::get('manage/{id}', 'ThreadController@manage')->name('manage');
+        Route::get('deleteMember/{id}', 'ThreadController@deleteMember')->name('deleteMember');
+        Route::get('changeApprove/{id}/{status}', 'ThreadController@changeApprove')->name('changeApprove');
     });
 });
 

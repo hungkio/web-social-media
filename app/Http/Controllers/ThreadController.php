@@ -55,7 +55,9 @@ class ThreadController extends Controller
             $thread = $this->threadRepository->create($data);
             ThreadMember::create([
                 'thread_id' => $thread->id,
-                'user_id' => auth()->id()
+                'user_id' => auth()->id(),
+                'role' => ThreadMember::ADMIN,
+                'status' => ThreadMember::APPROVED,
             ]);
             return redirect()->route('threads.my');
         } catch (\Exception $exception) {
@@ -157,6 +159,50 @@ class ThreadController extends Controller
             DB::rollback();
             return back()->with(['error' => $e->getMessage()]);
         }
+    }
 
+    // action for thread member
+    public function manage($id)
+    {
+        $thread = $this->threadRepository->find($id);
+        if ($thread->user_id == auth()->id()) {
+            $members = ThreadMember::where('thread_id', $id)->get();
+            return view('threads.manage', [
+                'users' => $members,
+                'admin_id' => $thread->user_id
+            ]);
+        }
+    }
+
+    public function deleteMember($id)
+    {
+        try {
+            $thread_member = ThreadMember::findOrFail($id);
+            $thread = $this->threadRepository->find($thread_member->thread_id);
+            if ($thread_member->user_id != $thread->user_id) {
+                $thread_member->delete();
+            }
+            return redirect()->route('threads.manage');
+        } catch (\Exception $exception) {
+            return back()->with(['error' => $exception->getMessage()]);
+        }
+    }
+
+    public function changeApprove($id, $status)
+    {
+        try {
+            $thread_member = ThreadMember::findOrFail($id);
+            $thread = $this->threadRepository->find($thread_member->thread_id);
+            if ($thread_member->user_id != $thread->user_id) {
+                if ($status == ThreadMember::APPROVED) {
+                    $thread_member->update(['status' => ThreadMember::APPROVED]);
+                } else {
+                    $thread_member->update(['status' => ThreadMember::DISAPPROVED]);
+                }
+            }
+            return redirect()->route('threads.manage');
+        } catch (\Exception $exception) {
+            return back()->with(['error' => $exception->getMessage()]);
+        }
     }
 }
