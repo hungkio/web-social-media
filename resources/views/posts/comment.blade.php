@@ -19,11 +19,23 @@
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <div class="container bootstrap snippets bootdey list-post">
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             @if($post)
                 @include('post-component', ['has_comment' => 1])
             @endif
         </div>
+        @if($post->thread)
+            <div class="col-sm-4">
+                @include('threads-component')
+            </div>
+        @else
+            @if($post->user)
+                <?php $user = $post->user ?>
+                <div class="col-sm-4">
+                    @include('profile-component')
+                </div>
+            @endif
+        @endif
     </div>
 
     <!-- Modal -->
@@ -191,7 +203,7 @@
 
                 $('input[type=text]').keypress(function (e) {
                     var key = e.which;
-                    if(key == 13)  // the enter key code
+                    if (key == 13)  // the enter key code
                     {
                         let content = $(this).val();
                         let post_id = {{ $post->id }};

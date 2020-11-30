@@ -11364,3 +11364,6 @@ a.text-dark:focus {
     font-size: 12px!important;
     padding: 0 2px;
 }
+.post-description img {
+    width: 100%!important;
+}
