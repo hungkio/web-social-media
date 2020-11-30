@@ -67,12 +67,16 @@ section {
 body {
   margin: 0;
   font-family: "Nunito", sans-serif;
-  font-size: 0.9rem;
+  font-size: 12px!important;
   font-weight: 400;
   line-height: 1.6;
   color: #212529;
   text-align: left;
   background-color: #f8fafc;
+}
+
+.fs-16 {
+    font-size: 16px!important;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -3821,7 +3825,7 @@ input[type=button].btn-block {
 .dropdown-item:focus {
   color: #16181b;
   text-decoration: none;
-  background-color: #f8f9fa;
+  background-color: #cfd9e4;
 }
 
 .dropdown-item.active,
@@ -11356,3 +11360,10 @@ a.text-dark:focus {
   }
 }
 
+.comment-reply-top button {
+    font-size: 12px!important;
+    padding: 0 2px;
+}
+.post-description img {
+    width: 100%!important;
+}

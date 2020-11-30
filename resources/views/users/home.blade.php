@@ -62,9 +62,10 @@
                     let count_post = $('.list-post-append').find('.panel').length
                     if (count_post < {{ $data->total() ?? 0 }}) {
                         $.ajax({
-                            url: '{{ route('post.getPost') }}' + '?page=' + page,
+                            url: '{{ route('post.getMyPost') }}' + '?page=' + page,
                             method: 'get',
                             success: function (res) {
+                                console.log(res)
                                 $('.list-post-append').append(res.data)
                                 unbin_onclick()
                                 init()
