@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('search', 'ThreadController@search')->name('search');
         Route::post('join', 'ThreadController@join')->name('join');
         Route::get('my/{category_id?}', 'ThreadController@getMyThread')->name('my');
-        Route::get('manage', 'ThreadController@manage')->name('manage');
+        Route::get('manage/{id}', 'ThreadController@manage')->name('manage');
     });
 });
 

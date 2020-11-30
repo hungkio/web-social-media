@@ -55,7 +55,9 @@ class ThreadController extends Controller
             $thread = $this->threadRepository->create($data);
             ThreadMember::create([
                 'thread_id' => $thread->id,
-                'user_id' => auth()->id()
+                'user_id' => auth()->id(),
+                'role' => ThreadMember::ADMIN,
+                'status' => ThreadMember::APPROVED,
             ]);
             return redirect()->route('threads.my');
         } catch (\Exception $exception) {
@@ -159,8 +161,15 @@ class ThreadController extends Controller
         }
     }
 
-    public function manage()
+    public function manage($id)
     {
-        return view('threads.manage');
+        $thread = $this->threadRepository->find($id);
+        if ($thread->user_id == auth()->id()) {
+            $members = ThreadMember::where('thread_id', $id)->get();
+            return view('threads.manage', [
+                'users' => $members,
+                'admin_id' => $thread->user_id
+            ]);
+        }
     }
 }
