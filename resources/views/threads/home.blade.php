@@ -40,6 +40,9 @@
                                     </button>
                                 @endif
                             @else
+                                <a href="{{ route('threads.manage') }}"
+                                   class="btn btn-success mr-3">Manage
+                                </a>
                                 <a href="{{ route('threads.delete', $thread->id) }}"
                                    class="btn btn-danger delete-thread">Delete
                                 </a>

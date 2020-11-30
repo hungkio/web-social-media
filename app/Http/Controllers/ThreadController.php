@@ -157,6 +157,10 @@ class ThreadController extends Controller
             DB::rollback();
             return back()->with(['error' => $e->getMessage()]);
         }
+    }
 
+    public function manage()
+    {
+        return view('threads.manage');
     }
 }
