@@ -51,10 +51,10 @@
                         @if(auth()->id())
                             @if($thread->user_id != auth()->id())
                                 @if($is_join)
-                                    <button class="btn btn-default btn-join btn-success">Leave
+                                    <button class="btn btn-default btn-join btn-danger">Leave
                                     </button>
                                 @else
-                                    <button class="btn btn-default btn-join"><span
+                                    <button class="btn btn-success btn-join"><span
                                             class="glyphicon glyphicon-plus"></span>
                                         Join
                                     </button>
@@ -92,13 +92,14 @@
                 let thread_id = '{{ $thread->id }}'
                 if (btn_text.trim() == 'Join') {
                     $(this).html('Leave');
-                    $(this).addClass('btn-success');
+                    $(this).addClass('btn-danger');
                     let is_join = 1;
                     join_thread(is_join, thread_id)
                 }
                 if (btn_text.trim() == 'Leave') {
                     $(this).html('<span class="glyphicon glyphicon-plus"></span> Join')
-                    $(this).removeClass('btn-success')
+                    $(this).removeClass('btn-danger')
+                    $(this).addClass('btn-success')
                     let is_join = 0;
                     join_thread(is_join, thread_id)
                 }
