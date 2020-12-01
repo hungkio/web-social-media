@@ -54,7 +54,13 @@
                             <?php $i = 1 ?>
                             @foreach($threads as $thread)
                                 <a href="{{ route('threads.post', $thread->id) }}">
-                                    <h3><span>{{ $i++ }} . </span> {{ ucwords($thread->name) }}</h3>
+                                    <h3 class="d-inline-flex">
+                                        <span>{{ $i++ }} . </span>
+                                        <img class="avatar-thread" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}" alt="John">
+                                        {{ ucwords($thread->name) }}
+                                        @if($thread->user_id == auth()->id()) <span class="pl-3"><i
+                                                class="fas fa-user-tie"></i></span> @endif
+                                    </h3>
                                 </a>
                                 <hr>
                             @endforeach

@@ -53,7 +53,8 @@
                     <div id="content" style="padding-top: 0">
                         @if($threads)
                             @foreach($threads as $thread)
-                                <a href="{{ route('threads.post', $thread->id) }}">
+                                <a href="{{ route('threads.post', $thread->id) }}"  class="d-inline-flex">
+                                    <img class="avatar-thread" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}" alt="John">
                                     <h3>
                                         {{ ucwords($thread->name) }}
                                         @if($thread->user_id == auth()->id()) <span class="pl-3"><i

@@ -26,15 +26,65 @@
             color: #999;
             font-weight: normal;
         }
+
+        .avatar_edit {
+            position: relative;
+        }
+
+        .edit-img {
+            font-size: 18px;
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+        }
+
+        .avatar_edit img {
+            border-radius: 50%;
+            width: 14em;
+            height: 14em;
+            padding-top: 10px;
+        }
+
+        .btn_avatar {
+            border-radius: 50%;
+            height: 36px;
+            width: 36px !important;
+            position: absolute;
+            bottom: -4px;
+            right: 12px;
+        }
+
+        .card_ label {
+            cursor: pointer;
+            /* Style as you please, it will become the visible UI component. */
+        }
+
+        .card_ #upload-photo {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        .card_ {
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+            margin-top: 5em;
+        }
     </style>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+        <form action="{{ route('threads.store') }}" method="POST" ENCTYPE="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="col-md-6 col-md-offset-2">
 
-                <h3>Create Threads</h3>
+                    <h3>Create Threads</h3>
 
-                <form action="{{ route('threads.store') }}" method="POST">
-                    @csrf
                     @if($categories && $categories->isNotEmpty())
                         <label for="title">Select a Category</label>
                         <select class="form-control mb-3" id="exampleFormControlSelect1" name="category_id">
@@ -72,10 +122,20 @@
                         </button>
                     </div>
 
-                </form>
-            </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card_">
+                        <div class="avatar_edit">
+                            <img id="img_preview" src="{{ asset('storage/users-avatar/avatar.png') }}" alt="John">
+                            <label class="btn_avatar edit-img" for="upload-photo"><i class="fas fa-pen"></i></label>
+                            <input type="file" name="avatar" id="upload-photo" accept="image/*"/>
+                        </div>
+                    </div>
 
-        </div>
+                </div>
+            </div>
+        </form>
+
     </div>
 @endsection
 @section('script')
@@ -83,6 +143,21 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js" defer></script>
     <script>
         $(function () {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#img_preview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]); // convert to base64 string
+                }
+            }
+
+            $("#upload-photo").change(function() {
+                readURL(this);
+            });
         });
     </script>
 @endsection

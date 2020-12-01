@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateThreadRequest;
 use App\ThreadMember;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Repositories\CategoryRepository;
 use App\Http\Repositories\ThreadRepository;
 use App\Http\Repositories\PostRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Repositories\UserLogRepository;
+use Illuminate\Support\Str;
 
 class ThreadController extends Controller
 {
@@ -53,8 +56,31 @@ class ThreadController extends Controller
 
     public function store(CreateThreadRequest $request)
     {
+        $avatar = 'avatar.png';
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            // if size less than 150MB
+            if ($file->getSize() < 150000000) {
+                // delete the older one
+                if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
+                    $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
+                    if (file_exists($path)) {
+                        @unlink($path);
+                    }
+                }
+                // upload
+                $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
+                $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
+            } else {
+                $msg = "File extension not allowed!";
+                $error = 1;
+            }
+        }
         $data = $request->only('category_id', 'description', 'name');
-        $data = array_merge($data, ['user_id' => auth()->id()]);
+        $data = array_merge($data, [
+            'user_id' => auth()->id(),
+            'avatar' => $avatar
+        ]);
         try {
             $thread = $this->threadRepository->create($data);
             ThreadMember::create([

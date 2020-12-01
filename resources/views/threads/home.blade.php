@@ -18,13 +18,25 @@
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <style>
+        .avatar_edit img {
+            width: 60px;
+            height: 60px;
+            display: block;
+            margin-right: 15px;
+            border-radius: 50%;
+        }
+    </style>
     <div class="container bootstrap snippets bootdey list-post">
         <div class="col-sm-12">
             <div class="panel panel-white post panel-shadow">
                 <div class="post-heading">
-                    <div class="pull-left meta">
-                        <div class="title h5">
-                            <h3>{{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}</h3>
+                    <div class="pull-left meta w-50">
+                        <div class="title h5 mt-0">
+                            <div class="avatar_edit">
+                                <img class="float-left" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}" alt="John">
+                                <h3 class="float-left">{{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}</h3>
+                            </div>
                         </div>
                     </div>
                     <div class="float-right mt-3">
