@@ -31,7 +31,7 @@ class UserController extends Controller
                     }
                 }
                 // upload
-                $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
+                $avatar = 'user_avatar_' . Str::uuid() . "." . $file->getClientOriginalExtension();
                 $update = User::where('id', Auth::user()->id)->update(['avatar' => $avatar]);
                 $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
                 $success = $update ? 1 : 0;

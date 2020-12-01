@@ -43,9 +43,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('threads')->name('threads.')->group(function () {
         Route::get('/create', 'ThreadController@create')->name('create');
+        Route::get('/edit/{id}', 'ThreadController@edit')->name('edit');
+        Route::put('/update', 'ThreadController@update')->name('update');
         Route::post('/store', 'ThreadController@store')->name('store');
         Route::get('/delete/{id}', 'ThreadController@delete')->name('delete');
-        Route::post('search', 'ThreadController@search')->name('search');
         Route::post('join', 'ThreadController@join')->name('join');
         Route::get('my/{category_id?}', 'ThreadController@getMyThread')->name('my');
 
@@ -64,5 +65,7 @@ Route::get('post/{id}', 'PostController@userPost')->name('post.user_post');
 Route::get('threads/post/{id}', 'ThreadController@getPost')->name('threads.post');
 Route::get('threads/postAjax/{id}', 'ThreadController@getPostAjax')->name('threads.postAjax');
 Route::get('threads/c/{category_id?}', 'ThreadController@index')->name('threads.index');
+Route::post('threads/search', 'ThreadController@search')->name('threads.search');
+
 
 

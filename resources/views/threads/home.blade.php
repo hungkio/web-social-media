@@ -34,8 +34,16 @@
                     <div class="pull-left meta w-50">
                         <div class="title h5 mt-0">
                             <div class="avatar_edit">
-                                <img class="float-left" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}" alt="John">
-                                <h3 class="float-left">{{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}</h3>
+                                <img class="float-left" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}"
+                                     alt="John">
+                                <h3 class="float-left">
+                                    {{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}
+                                    @if($thread->user_id == auth()->id())
+                                        <a href="{{ route('threads.edit', $thread->id) }}"><i class="fas fa-edit"
+                                                                                              style="color: #1d68a7"></i>
+                                        </a>
+                                    @endif
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -96,9 +104,9 @@
                 }
             })
 
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 let page = 1;
-                if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                     page++;
                     let count_post = $('.list-post-append').find('.panel').length
                     console.log({{ $data->total() ?? 0 }})

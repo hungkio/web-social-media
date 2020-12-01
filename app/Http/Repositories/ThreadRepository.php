@@ -93,6 +93,11 @@ class ThreadRepository
         return Thread::create($data);
     }
 
+    public function update($id, $data)
+    {
+        return Thread::findOrfail($id)->update($data);
+    }
+
     public function delete($id)
     {
         return Thread::findOrFail($id)->delete();
