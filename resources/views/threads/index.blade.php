@@ -46,7 +46,7 @@
 
                     <!-- Page Content Holder -->
                     <div id="content" style="padding-top: 0">
-                        <h2>Today's Top Growing in {{ $category_->name }}</h2>
+                        <h2>Top Growing in {{ $category_->name }}</h2>
 
                         <div class="line"></div>
                         @if($threads)

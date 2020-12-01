@@ -278,7 +278,7 @@
                 },
                 complete: function () {
                     $('.post-footer').unblock()
-                    location.reload()
+                    // location.reload()
                 }
             })
         }

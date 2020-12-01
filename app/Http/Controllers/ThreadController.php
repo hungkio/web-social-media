@@ -9,22 +9,26 @@ use App\Http\Repositories\CategoryRepository;
 use App\Http\Repositories\ThreadRepository;
 use App\Http\Repositories\PostRepository;
 use Illuminate\Support\Facades\DB;
+use App\Http\Repositories\UserLogRepository;
 
 class ThreadController extends Controller
 {
     protected $categoryRepository;
     protected $threadRepository;
     protected $postRepository;
+    protected $userLogRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
         ThreadRepository $threadRepository,
-        PostRepository $postRepository
+        PostRepository $postRepository,
+        UserLogRepository $userLogRepository
     )
     {
         $this->categoryRepository = $categoryRepository;
         $this->threadRepository = $threadRepository;
         $this->postRepository = $postRepository;
+        $this->userLogRepository = $userLogRepository;
     }
 
     public function index($category_id = 1)
@@ -127,6 +131,9 @@ class ThreadController extends Controller
     {
         try {
             $this->threadRepository->join($request);
+            if ($request->thread_id && auth()->id() && $request->is_join) {
+                $this->userLogRepository->updateOrCreate($request->thread_id);
+            }
             return response()->json(['success' => 'Updated success']);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()]);

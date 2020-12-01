@@ -8,7 +8,7 @@ use App\ThreadMember;
 
 class ThreadRepository
 {
-    public function getThreadTop($category_id = null, $user_own = null)
+    public function getThreadTop($category_id = null, $user_own = null, $limit = null)
     {
         if ($category_id) {
             if ($user_own) {

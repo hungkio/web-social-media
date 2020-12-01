@@ -42,7 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('threads')->name('threads.')->group(function () {
-        Route::get('/c/{category_id?}', 'ThreadController@index')->name('index');
         Route::get('/create', 'ThreadController@create')->name('create');
         Route::post('/store', 'ThreadController@store')->name('store');
         Route::get('/delete/{id}', 'ThreadController@delete')->name('delete');
@@ -64,5 +63,6 @@ Route::get('/comments/{id}', 'PostController@comment')->name('post.comment');
 Route::get('post/{id}', 'PostController@userPost')->name('post.user_post');
 Route::get('threads/post/{id}', 'ThreadController@getPost')->name('threads.post');
 Route::get('threads/postAjax/{id}', 'ThreadController@getPostAjax')->name('threads.postAjax');
+Route::get('threads/c/{category_id?}', 'ThreadController@index')->name('threads.index');
 
 
