@@ -72,7 +72,14 @@
     <div class="avatar_edit">
         <img src="{{ asset('/storage/users-avatar/' . $post->thread->avatar) }}" alt="John">
     </div>
-    <h1>{{ $post->thread->name }}</h1>
+    <h2>{{ $post->thread->name }}</h2>
     <p class="title_">{{ $post->thread->description ?? '' }}</p>
+    <p class="title_">
+        @if($post->thread->members->count() > 1)
+            {{ $post->thread->members->count() . ' Members' }}
+        @else
+            {{ $post->thread->members->count() . ' Member' }}
+        @endif
+    </p>
 </div>
 

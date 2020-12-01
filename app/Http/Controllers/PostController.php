@@ -107,45 +107,65 @@ class PostController extends Controller
             // suggest with user logs
             $user_logs = UserLog::where('user_id', auth()->id())->orderBy('count', 'desc')->get();
             if ($user_logs) {
-                if ($user_logs->where('user_id', '!=', auth()->id())->count() >= 7) {
-                    // show luon neu so luong threads khong so huu >= 7
-                    $threads_arr = [];
-                    foreach ($user_logs->where('user_id', '!=', auth()->id()) as $log) {
-                        $threads_arr[] = $log->thread;
+                // lay them thread cung category
+                $threads_arr = [];
+                foreach ($user_logs as $log) {
+                    if ($log->thread->user_id != auth()->id()) {
+                        //check member
+                        $is_member = 0;
+                        foreach ($log->thread->members as $member)
+                        {
+                            if ($member->user_id == auth()->id()) {
+                                $is_member = 1;
+                            }
+                        }
+                        if (!$is_member) {
+                            $threads_arr[] = $log->thread;
+                        }
                     }
+                }
+
+                // first cate
+                $category_id = $user_logs[0]->thread->category_id ?? 1;
+                $threads_refer = $this->threadRepository->getThreadRecommend($category_id);
+                if ($threads_refer) {
+                    foreach ($threads_refer as $thread) {
+                        if ($thread->user_id != auth()->id()) {
+                            //check member
+                            $is_member = 0;
+                            foreach ($thread->members as $member)
+                            {
+                                if ($member->user_id == auth()->id()) {
+                                    $is_member = 1;
+                                }
+                            }
+                            if (!$is_member) {
+                                $threads_arr[] = $thread;
+                            }
+                        }
+                    }
+                }
+                if (sizeof($threads_arr) > 7) {
                     $threads_arr = array_slice($threads_arr, 0, 7);
                     $threads = collect($threads_arr);
                 } else {
-                    // lay them thread cung category
-                    $threads_arr = [];
-                    foreach ($user_logs->where('user_id', '!=', auth()->id()) as $log) {
-                        $threads_arr[] = $log->thread;
-                    }
-
-                    // first cate
-                    $category_id = $user_logs->where('user_id', '!=', auth()->id())[0]->thread->category_id ?? 1;
-                    $threads_refer = $this->threadRepository->getThreadTop($category_id);
-                    if ($threads_refer) {
-                        foreach ($threads_refer as $thread) {
-                            $threads_arr[] = $thread;
-                        }
-                    }
-                    if ($threads_refer->count() + sizeof($threads_arr) > 7) {
-                        $threads_arr = array_slice($threads_arr, 0, 7);
-                        $threads = collect($threads_arr);
-                    } else {
-                        $threads = collect($threads_arr);
-                    }
+                    $threads = collect($threads_arr);
                 }
-            } else {
-                // show list top threads
-                $category_id = 1;
-                $threads = $this->threadRepository->getThreadTop($category_id);
             }
         } else {
             // suggest with top threads
-            $category_id = 1;
-            $threads = $this->threadRepository->getThreadTop($category_id);
+            $threads = $this->threadRepository->getThreadRecommend();
+            if ($threads) {
+                foreach ($threads as $thread) {
+                    $threads_arr[] = $thread;
+                }
+            }
+            if (sizeof($threads_arr) > 7) {
+                $threads_arr = array_slice($threads_arr, 0, 7);
+                $threads = collect($threads_arr);
+            } else {
+                $threads = collect($threads_arr);
+            }
         }
         return $threads;
     }

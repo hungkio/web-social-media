@@ -143,7 +143,7 @@ class ThreadController extends Controller
     public function getMyThread($category_id = 1)
     {
         $categories = $this->categoryRepository->getAll();
-        $threads = $this->threadRepository->getThreadTop($category_id, auth()->id());
+        $threads = $this->threadRepository->getMyThread($category_id);
         return view('threads.my', [
             'categories' => $categories ?? '',
             'threads' => $threads ?? '',

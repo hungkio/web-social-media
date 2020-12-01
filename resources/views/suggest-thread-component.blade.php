@@ -62,7 +62,7 @@
         @if($suggest_threads)
             <ul class="list-unstyled components text-left">
                 @foreach($suggest_threads as $thread)
-                    <li><a href=""><h5><b class="pl-5">{{ ucwords($thread->name) }}</b></h5></a></li>
+                    <li><a href="{{ route('threads.post', $thread->id) }}"><h5><b class="pl-5">{{ ucwords($thread->name) }}</b></h5></a></li>
                     <hr>
                 @endforeach
                     <li class="text-center"><a href="{{ route('threads.index') }}" class="btn btn-success view-all"><b>View All</b></a></li>

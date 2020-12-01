@@ -71,6 +71,12 @@ a, a:hover, a:focus {
 
 #sidebar.active {
     margin-left: -250px;
+    background-color: #cccccc!important;
+}
+
+#sidebar .active {
+    background-color: #cccccc!important;
+    color: #7386D5;
 }
 
 #sidebar .sidebar-header {

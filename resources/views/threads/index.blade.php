@@ -24,7 +24,8 @@
                 <!-- Search form -->
                 <form id="search_communities" action="{{ route('threads.search') }}" method="post">
                     @csrf
-                    <input class="form-control mb-3" type="text" name="key" placeholder="Search Communities" aria-label="Search">
+                    <input class="form-control mb-3" type="text" name="key" placeholder="Search Communities"
+                           aria-label="Search">
                 </form>
                 <div class="wrapper">
                     <!-- Sidebar Holder -->
@@ -37,7 +38,7 @@
                             @if($categories)
                                 @foreach($categories as $category)
                                     <li>
-                                        <a href="{{ route('threads.index', $category->id) }}">{{$category->name}}</a>
+                                        <a @if((!request('category_id') && $category->id == 1) || $category->id == request('category_id')) class="active" @endif href="{{ route('threads.index', $category->id) }}">{{$category->name}}</a>
                                     </li>
                                 @endforeach
                             @endif
@@ -52,9 +53,11 @@
                         @if($threads)
                             <?php $i = 1 ?>
                             @foreach($threads as $thread)
-                                    <a href="{{ route('threads.post', $thread->id) }}"><h3><span>{{ $i++ }} . </span> {{ ucwords($thread->name) }}</h3></a>
-                                    <hr>
-                                @endforeach
+                                <a href="{{ route('threads.post', $thread->id) }}">
+                                    <h3><span>{{ $i++ }} . </span> {{ ucwords($thread->name) }}</h3>
+                                </a>
+                                <hr>
+                            @endforeach
                         @endif
                     </div>
                 </div>
@@ -66,7 +69,7 @@
     <script>
         $('input[type=text]').keypress(function (e) {
             var key = e.which;
-            if(key == 13)  // the enter key code
+            if (key == 13)  // the enter key code
             {
                 if ($('input[name=key]').val() != '') {
                     $.ajax({

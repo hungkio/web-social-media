@@ -21,12 +21,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <a href="{{ route('threads.create') }}" class="btn btn-primary btn-join mb-3 text-white"><span class="glyphicon glyphicon-plus"></span> Create
+                <a href="{{ route('threads.create') }}" class="btn btn-primary btn-join mb-3 text-white"><span
+                        class="glyphicon glyphicon-plus"></span> Create
                 </a>
                 <!-- Search form -->
                 <form id="search_communities" action="{{ route('threads.search') }}" method="post">
                     @csrf
-                    <input class="form-control mb-3" type="text" name="key" placeholder="Search Communities" aria-label="Search">
+                    <input class="form-control mb-3" type="text" name="key" placeholder="Search Communities"
+                           aria-label="Search">
                     <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                 </form>
                 <div class="wrapper">
@@ -40,7 +42,7 @@
                             @if($categories)
                                 @foreach($categories as $category)
                                     <li>
-                                        <a href="{{ route('threads.my', $category->id) }}">{{$category->name}}</a>
+                                        <a @if((!request('category_id') && $category->id == 1) || $category->id == request('category_id')) class="active" @endif href="{{ route('threads.my', $category->id) }}">{{$category->name}}</a>
                                     </li>
                                 @endforeach
                             @endif
@@ -51,9 +53,15 @@
                     <div id="content" style="padding-top: 0">
                         @if($threads)
                             @foreach($threads as $thread)
-                                    <a href="{{ route('threads.post', $thread->id) }}"><h3>{{ ucwords($thread->name) }}</h3></a>
-                                    <hr>
-                                @endforeach
+                                <a href="{{ route('threads.post', $thread->id) }}">
+                                    <h3>
+                                        {{ ucwords($thread->name) }}
+                                        @if($thread->user_id == auth()->id()) <span class="pl-3"><i
+                                                class="fas fa-user-tie"></i></span> @endif
+                                    </h3>
+                                </a>
+                                <hr>
+                            @endforeach
                         @endif
                     </div>
                 </div>
@@ -65,7 +73,7 @@
     <script>
         $('input[type=text]').keypress(function (e) {
             var key = e.which;
-            if(key == 13)  // the enter key code
+            if (key == 13)  // the enter key code
             {
                 if ($('input[name=key]').val() != '') {
                     $.ajax({
