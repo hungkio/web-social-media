@@ -53,6 +53,14 @@
         border-radius: 20px;
     }
 
+    .img-thread {
+        width: 30px;
+        height: 30px;
+        display: block;
+        margin-left: 1.5em;
+        border-radius: 50%;
+    }
+
 </style>
 <div class="card_">
     <div class="avatar_edit">
@@ -62,7 +70,12 @@
         @if($suggest_threads)
             <ul class="list-unstyled components text-left">
                 @foreach($suggest_threads as $thread)
-                    <li><a href="{{ route('threads.post', $thread->id) }}"><h5><b class="pl-5">{{ ucwords($thread->name) }}</b></h5></a></li>
+                    <li>
+                        <a class="d-inline-flex" href="{{ route('threads.post', $thread->id) }}">
+                            <img class="img-thread" src="{{ asset('storage/users-avatar/' . $thread->avatar) }}" alt="">
+                            <h5><b class="pl-3">{{ ucwords($thread->name) }}</b></h5>
+                        </a>
+                    </li>
                     <hr>
                 @endforeach
                     <li class="text-center"><a href="{{ route('threads.index') }}" class="btn btn-success view-all"><b>View All</b></a></li>
