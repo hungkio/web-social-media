@@ -152,6 +152,9 @@ class PostController extends Controller
                     $threads = collect($threads_arr);
                 }
             }
+
+            // unset the same record
+            $threads = $threads->unique('id');
         } else {
             // suggest with top threads
             $threads = $this->threadRepository->getThreadRecommend();
