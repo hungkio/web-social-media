@@ -100,6 +100,9 @@
             </div>
         </div>
     </div>
+    <div id="throbber">
+        <img src="{{ asset('logo/loading.gif') }}" />
+    </div>
 @endsection
 @section('script')
     <script>
@@ -274,7 +277,7 @@
                 },
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                 beforeSend: function () {
-                    $('.post-footer').block()
+                    $('.post-footer').block({ message: $('#throbber') })
                 },
                 complete: function () {
                     $('.post-footer').unblock()

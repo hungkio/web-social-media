@@ -52,29 +52,30 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($users as $user)
+                    @foreach($users as $thread_member)
                         <tr>
-                            <td>{{ $user->user->id ?? '' }}</td>
+                            <td>{{ $thread_member->id ?? '' }}</td>
                             <td>
                                 <a href="#">
-                                    <img src="{{ asset('storage/users-avatar/' . $user->user->avatar ?? '') }}"
+                                    <img src="{{ asset('storage/users-avatar/' . $thread_member->user->avatar ?? '') }}"
                                          class="avatar img-circle float-left" alt="Avatar">
-                                    <span>{{ $user->user->name }}</span>
+                                    <span>{{ $thread_member->user->name }}</span>
                                 </a>
                             </td>
-                            <td>{{ $user->user->created_at }}</td>
-                            <td @if($user->role == \App\ThreadMember::ADMIN) style="color: red" @endif>
-                                {{ \App\ThreadMember::ROLE[$user->role] }}
+                            <td>{{ $thread_member->user->created_at }}</td>
+                            <td @if($thread_member->role == \App\ThreadMember::ADMIN) style="color: red" @endif>
+                                {{ \App\ThreadMember::ROLE[$thread_member->role] }}
                             </td>
-                            <td>{{ \App\ThreadMember::STATUS[$user->status] }}
+                            <td @if($thread_member->status == \App\ThreadMember::APPROVED) style="color: blue" @endif>
+                                {{ \App\ThreadMember::STATUS[$thread_member->status] }}
                             </td>
                             <td>
-                                @if($admin_id != $user->user->id)
-                                    <a href="#" class="settings btn btn-danger" title="Delete" data-toggle="tooltip">Delete</a>
-                                    @if($user->status == \App\ThreadMember::APPROVED)
-                                        <a href="#" class="delete btn btn-warning" title="Disapprove">Disapprove</a>
+                                @if($admin_id != $thread_member->user->id)
+                                    <a href="{{ route('threads.deleteMember', $thread_member->id) }}" class="settings btn btn-danger delete-member" title="Delete" data-toggle="tooltip">Delete</a>
+                                    @if($thread_member->status == \App\ThreadMember::APPROVED)
+                                        <a href="{{ route('threads.changeApprove', ['id' => $thread_member->id, 'status' =>\App\ThreadMember::DISAPPROVED]) }}" class="delete btn btn-warning" title="Disapprove">Disapprove</a>
                                     @else
-                                        <a href="#" class="delete btn btn-success" title="Approve"
+                                        <a href="{{ route('threads.changeApprove', ['id' => $thread_member->id, 'status' =>\App\ThreadMember::APPROVED]) }}" class="delete btn btn-success" title="Approve"
                                            data-toggle="tooltip">Approve</a>
                                     @endif
                                 @endif
@@ -94,6 +95,11 @@
         $(document).ready(function () {
             $.noConflict();
             $('table').DataTable();
+            $('.delete-member').click(function () {
+                if (!confirm('Are you sure you want to fire this member?')) {
+                    return false;
+                }
+            })
         });
     </script>
 @endsection

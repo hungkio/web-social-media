@@ -4,27 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateThreadRequest;
 use App\ThreadMember;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Repositories\CategoryRepository;
 use App\Http\Repositories\ThreadRepository;
 use App\Http\Repositories\PostRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Repositories\UserLogRepository;
+use Illuminate\Support\Str;
+use App\Http\Requests\UpdateThreadRequest;
 
 class ThreadController extends Controller
 {
     protected $categoryRepository;
     protected $threadRepository;
     protected $postRepository;
+    protected $userLogRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
         ThreadRepository $threadRepository,
-        PostRepository $postRepository
+        PostRepository $postRepository,
+        UserLogRepository $userLogRepository
     )
     {
         $this->categoryRepository = $categoryRepository;
         $this->threadRepository = $threadRepository;
         $this->postRepository = $postRepository;
+        $this->userLogRepository = $userLogRepository;
     }
 
     public function index($category_id = 1)
@@ -47,10 +55,46 @@ class ThreadController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $categories = $this->categoryRepository->getAll();
+        $thread = $this->threadRepository->find($id);
+        if ($thread->user_id == \auth()->id()) {
+            return view('threads.update', [
+                'categories' => $categories,
+                'thread' => $thread,
+            ]);
+        }
+        return back();
+    }
+
     public function store(CreateThreadRequest $request)
     {
+        $avatar = 'avatar.png';
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            // if size less than 150MB
+            if ($file->getSize() < 150000000) {
+                // delete the older one
+                if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
+                    $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
+                    if (file_exists($path)) {
+                        @unlink($path);
+                    }
+                }
+                // upload
+                $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
+                $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
+            } else {
+                $msg = "File extension not allowed!";
+                $error = 1;
+            }
+        }
         $data = $request->only('category_id', 'description', 'name');
-        $data = array_merge($data, ['user_id' => auth()->id()]);
+        $data = array_merge($data, [
+            'user_id' => auth()->id(),
+            'avatar' => $avatar
+        ]);
         try {
             $thread = $this->threadRepository->create($data);
             ThreadMember::create([
@@ -59,6 +103,41 @@ class ThreadController extends Controller
                 'role' => ThreadMember::ADMIN,
                 'status' => ThreadMember::APPROVED,
             ]);
+            return redirect()->route('threads.my');
+        } catch (\Exception $exception) {
+            return back()->with(['error' => $exception->getMessage()]);
+        }
+    }
+
+    public function update(UpdateThreadRequest $request)
+    {
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            // if size less than 150MB
+            if ($file->getSize() < 150000000) {
+                // delete the older one
+                if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
+                    $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
+                    if (file_exists($path)) {
+                        @unlink($path);
+                    }
+                }
+                // upload
+                $avatar = 'thread_avatar_' . Str::uuid() . "." . $file->getClientOriginalExtension();
+                $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
+            } else {
+                $msg = "File extension not allowed!";
+                $error = 1;
+            }
+        }
+        $data = $request->only('description', 'name');
+        if (@$avatar) {
+            $data = array_merge($data, [
+                'avatar' => $avatar
+            ]);
+        }
+        try {
+            $thread = $this->threadRepository->update($request->id, $data);
             return redirect()->route('threads.my');
         } catch (\Exception $exception) {
             return back()->with(['error' => $exception->getMessage()]);
@@ -127,6 +206,9 @@ class ThreadController extends Controller
     {
         try {
             $this->threadRepository->join($request);
+            if ($request->thread_id && auth()->id() && $request->is_join) {
+                $this->userLogRepository->updateOrCreate($request->thread_id);
+            }
             return response()->json(['success' => 'Updated success']);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()]);
@@ -136,7 +218,7 @@ class ThreadController extends Controller
     public function getMyThread($category_id = 1)
     {
         $categories = $this->categoryRepository->getAll();
-        $threads = $this->threadRepository->getThreadTop($category_id, auth()->id());
+        $threads = $this->threadRepository->getMyThread($category_id);
         return view('threads.my', [
             'categories' => $categories ?? '',
             'threads' => $threads ?? '',
@@ -161,6 +243,7 @@ class ThreadController extends Controller
         }
     }
 
+    // action for thread member
     public function manage($id)
     {
         $thread = $this->threadRepository->find($id);
@@ -170,6 +253,38 @@ class ThreadController extends Controller
                 'users' => $members,
                 'admin_id' => $thread->user_id
             ]);
+        }
+    }
+
+    public function deleteMember($id)
+    {
+        try {
+            $thread_member = ThreadMember::findOrFail($id);
+            $thread = $this->threadRepository->find($thread_member->thread_id);
+            if ($thread_member->user_id != $thread->user_id) {
+                $thread_member->delete();
+            }
+            return redirect()->route('threads.manage');
+        } catch (\Exception $exception) {
+            return back()->with(['error' => $exception->getMessage()]);
+        }
+    }
+
+    public function changeApprove($id, $status)
+    {
+        try {
+            $thread_member = ThreadMember::findOrFail($id);
+            $thread = $this->threadRepository->find($thread_member->thread_id);
+            if ($thread_member->user_id != $thread->user_id) {
+                if ($status == ThreadMember::APPROVED) {
+                    $thread_member->update(['status' => ThreadMember::APPROVED]);
+                } else {
+                    $thread_member->update(['status' => ThreadMember::DISAPPROVED]);
+                }
+            }
+            return redirect()->route('threads.manage');
+        } catch (\Exception $exception) {
+            return back()->with(['error' => $exception->getMessage()]);
         }
     }
 }

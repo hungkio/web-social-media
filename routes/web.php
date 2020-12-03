@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('/update', 'UserController@update')->name('update');
         Route::get('/update', 'UserController@edit')->name('edit');
+        Route::post('/change_password', 'UserController@changePassword')->name('change_pass');
     });
 
     Route::prefix('post')->name('post.')->group(function () {
@@ -42,14 +43,18 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('threads')->name('threads.')->group(function () {
-        Route::get('/c/{category_id?}', 'ThreadController@index')->name('index');
         Route::get('/create', 'ThreadController@create')->name('create');
+        Route::get('/edit/{id}', 'ThreadController@edit')->name('edit');
+        Route::put('/update', 'ThreadController@update')->name('update');
         Route::post('/store', 'ThreadController@store')->name('store');
         Route::get('/delete/{id}', 'ThreadController@delete')->name('delete');
-        Route::post('search', 'ThreadController@search')->name('search');
         Route::post('join', 'ThreadController@join')->name('join');
         Route::get('my/{category_id?}', 'ThreadController@getMyThread')->name('my');
+
+        // route for threads member
         Route::get('manage/{id}', 'ThreadController@manage')->name('manage');
+        Route::get('deleteMember/{id}', 'ThreadController@deleteMember')->name('deleteMember');
+        Route::get('changeApprove/{id}/{status}', 'ThreadController@changeApprove')->name('changeApprove');
     });
 });
 
@@ -60,5 +65,8 @@ Route::get('/comments/{id}', 'PostController@comment')->name('post.comment');
 Route::get('post/{id}', 'PostController@userPost')->name('post.user_post');
 Route::get('threads/post/{id}', 'ThreadController@getPost')->name('threads.post');
 Route::get('threads/postAjax/{id}', 'ThreadController@getPostAjax')->name('threads.postAjax');
+Route::get('threads/c/{category_id?}', 'ThreadController@index')->name('threads.index');
+Route::post('threads/search', 'ThreadController@search')->name('threads.search');
+
 
 

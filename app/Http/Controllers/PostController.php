@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Repositories\ThreadRepository;
 use App\Http\Repositories\VoteRepository;
+use App\UserLog;
 use App\Vote;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Repositories\PostRepository;
 use App\Http\Repositories\CommentRepository;
 use App\Http\Repositories\UserRepository;
+use App\Http\Repositories\UserLogRepository;
 
 class PostController extends Controller
 {
@@ -18,13 +21,15 @@ class PostController extends Controller
     protected $commentRepository;
     protected $userRepository;
     protected $threadRepository;
+    protected $userLogRepository;
 
     public function __construct(
         PostRepository $postRepository,
         VoteRepository $voteRepository,
         CommentRepository $commentRepository,
         UserRepository $userRepository,
-        ThreadRepository $threadRepository
+        ThreadRepository $threadRepository,
+        UserLogRepository $userLogRepository
     )
     {
         $this->postRepository = $postRepository;
@@ -32,13 +37,16 @@ class PostController extends Controller
         $this->commentRepository = $commentRepository;
         $this->userRepository = $userRepository;
         $this->threadRepository = $threadRepository;
+        $this->userLogRepository = $userLogRepository;
     }
 
     public function index()
     {
         $data = $this->postRepository->getAll(3);
+        $suggest_threads = $this->suggestThreads();
         return view('home', [
-            'data' => $data ?? ''
+            'data' => $data ?? '',
+            'suggest_threads' => $suggest_threads ?? '',
         ]);
     }
 
@@ -46,8 +54,7 @@ class PostController extends Controller
     {
         $data = $this->postRepository->getAll(3);
         $html = '';
-        foreach ($data as $post)
-        {
+        foreach ($data as $post) {
             $html .= view('post-component', compact('post'))->render();
         }
         return response()->json(['data' => $html]);
@@ -67,8 +74,7 @@ class PostController extends Controller
     {
         $data = $this->postRepository->getMyPost(3);
         $html = '';
-        foreach ($data as $post)
-        {
+        foreach ($data as $post) {
             $html .= view('post-component', compact('post'))->render();
         }
         return response()->json(['data' => $html]);
@@ -77,8 +83,10 @@ class PostController extends Controller
     public function popular()
     {
         $data = $this->postRepository->getPopular(3);
+        $suggest_threads = $this->suggestThreads();
         return view('posts.popular', [
-            'data' => $data ?? ''
+            'data' => $data ?? '',
+            'suggest_threads' => $suggest_threads ?? '',
         ]);
     }
 
@@ -86,11 +94,83 @@ class PostController extends Controller
     {
         $data = $this->postRepository->getPopular(3);
         $html = '';
-        foreach ($data as $post)
-        {
+        foreach ($data as $post) {
             $html .= view('post-component', compact('post'))->render();
         }
         return response()->json(['data' => $html]);
+    }
+
+    public function suggestThreads()
+    {
+        $threads = '';
+        if (auth()->id()) {
+            // suggest with user logs
+            $user_logs = UserLog::where('user_id', auth()->id())->orderBy('count', 'desc')->get();
+            if ($user_logs) {
+                // lay them thread cung category
+                $threads_arr = [];
+                foreach ($user_logs as $log) {
+                    if ($log->thread->user_id != auth()->id()) {
+                        //check member
+                        $is_member = 0;
+                        foreach ($log->thread->members as $member)
+                        {
+                            if ($member->user_id == auth()->id()) {
+                                $is_member = 1;
+                            }
+                        }
+                        if (!$is_member) {
+                            $threads_arr[] = $log->thread;
+                        }
+                    }
+                }
+
+                // first cate
+                $category_id = $user_logs[0]->thread->category_id ?? 1;
+                $threads_refer = $this->threadRepository->getThreadRecommend($category_id);
+                if ($threads_refer) {
+                    foreach ($threads_refer as $thread) {
+                        if ($thread->user_id != auth()->id()) {
+                            //check member
+                            $is_member = 0;
+                            foreach ($thread->members as $member)
+                            {
+                                if ($member->user_id == auth()->id()) {
+                                    $is_member = 1;
+                                }
+                            }
+                            if (!$is_member) {
+                                $threads_arr[] = $thread;
+                            }
+                        }
+                    }
+                }
+                if (sizeof($threads_arr) > 7) {
+                    $threads_arr = array_slice($threads_arr, 0, 7);
+                    $threads = collect($threads_arr);
+                } else {
+                    $threads = collect($threads_arr);
+                }
+            }
+
+            // unset the same record
+            $threads = $threads->unique('id');
+        } else {
+            // suggest with top threads
+            $threads = $this->threadRepository->getThreadRecommend();
+            if ($threads) {
+                foreach ($threads as $thread) {
+                    $threads_arr[] = $thread;
+                }
+            }
+            if (sizeof($threads_arr) > 7) {
+                $threads_arr = array_slice($threads_arr, 0, 7);
+                $threads = collect($threads_arr);
+            } else {
+                $threads = collect($threads_arr);
+            }
+        }
+        return $threads;
     }
 
     public function create()
@@ -159,6 +239,10 @@ class PostController extends Controller
             $comments = $this->postRepository->diffTime($data->comments);
             $comments = $this->commentRepository->formatComment($comments);
         }
+
+        if ($data->thread_id && auth()->id()) {
+            $this->userLogRepository->updateOrCreate($data->thread_id);
+        }
         return view('posts.comment', [
             'post' => $data,
             'comments' => @$comments,
@@ -171,6 +255,10 @@ class PostController extends Controller
             $data = $request->only('content', 'post_id', 'parent', 'user_reply');
             if ($data['content'] != '') {
                 $this->commentRepository->store(array_merge(['user_id' => auth()->id()], $data));
+                $thread_id = $this->postRepository->find($request->post_id)->thread_id ?? '';
+                if ($thread_id && auth()->id()) {
+                    $this->userLogRepository->updateOrCreate($thread_id);
+                }
                 return response()->json(['success' => 'Comment has been saved']);
             }
         } catch (\Exception $exception) {

@@ -24,7 +24,8 @@
                 <!-- Search form -->
                 <form id="search_communities" action="{{ route('threads.search') }}" method="post">
                     @csrf
-                    <input class="form-control mb-3" type="text" name="key" placeholder="Search Communities" aria-label="Search">
+                    <input class="form-control mb-3" type="text" name="key" placeholder="Search Communities"
+                           aria-label="Search">
                 </form>
                 <div class="wrapper">
                     <!-- Sidebar Holder -->
@@ -37,7 +38,7 @@
                             @if($categories)
                                 @foreach($categories as $category)
                                     <li>
-                                        <a href="{{ route('threads.index', $category->id) }}">{{$category->name}}</a>
+                                        <a @if((!request('category_id') && $category->id == 1) || $category->id == request('category_id')) class="active" @endif href="{{ route('threads.index', $category->id) }}">{{$category->name}}</a>
                                     </li>
                                 @endforeach
                             @endif
@@ -46,15 +47,23 @@
 
                     <!-- Page Content Holder -->
                     <div id="content" style="padding-top: 0">
-                        <h2>Today's Top Growing in {{ $category_->name }}</h2>
+                        <h2>Top Growing in {{ $category_->name }}</h2>
 
                         <div class="line"></div>
                         @if($threads)
                             <?php $i = 1 ?>
                             @foreach($threads as $thread)
-                                    <a href="{{ route('threads.post', $thread->id) }}"><h3><span>{{ $i++ }} . </span> {{ ucwords($thread->name) }}</h3></a>
-                                    <hr>
-                                @endforeach
+                                <a href="{{ route('threads.post', $thread->id) }}">
+                                    <h3 class="d-inline-flex">
+                                        <span>{{ $i++ }} . </span>
+                                        <img class="avatar-thread" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}" alt="John">
+                                        {{ ucwords($thread->name) }}
+                                        @if($thread->user_id == auth()->id()) <span class="pl-3"><i
+                                                class="fas fa-user-tie"></i></span> @endif
+                                    </h3>
+                                </a>
+                                <hr>
+                            @endforeach
                         @endif
                     </div>
                 </div>
@@ -66,7 +75,7 @@
     <script>
         $('input[type=text]').keypress(function (e) {
             var key = e.which;
-            if(key == 13)  // the enter key code
+            if (key == 13)  // the enter key code
             {
                 if ($('input[name=key]').val() != '') {
                     $.ajax({

@@ -78,18 +78,20 @@
         }
     </style>
     <div class="container-fluid">
-        <form action="{{ route('threads.store') }}" method="POST" ENCTYPE="multipart/form-data">
+        <form action="{{ route('threads.update') }}" method="post" ENCTYPE="multipart/form-data">
             @csrf
+            @method('put')
+            <input type="hidden" name="id" value="{{ $thread->id }}">
             <div class="row">
                 <div class="col-md-6 col-md-offset-2">
 
-                    <h3>Create Threads</h3>
+                    <h3>Update Threads</h3>
 
                     @if($categories && $categories->isNotEmpty())
                         <label for="title">Select a Category</label>
-                        <select class="form-control mb-3" id="exampleFormControlSelect1" name="category_id">
+                        <select class="form-control mb-3" id="exampleFormControlSelect1" name="category_id" disabled>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}" @if($category->id == $thread->category_id) selected @endif>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         @error('category_id')
@@ -99,7 +101,7 @@
 
                     <div class="form-group">
                         <label for="title">Title <span class="require">*</span></label>
-                        <input type="text" class="form-control" name="name"/>
+                        <input type="text" class="form-control" name="name" value="{{ $thread->name }}"/>
                         @error('name')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -107,7 +109,7 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <input class="form-control" name="description"></input>
+                        <input class="form-control" name="description" value="{{ $thread->description }}"></input>
                         @error('description')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -115,7 +117,7 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">
-                            Create
+                            Update
                         </button>
                         <button class="btn btn-default">
                             <a href="{{ route('post.my_post') }}">Cancel</a>
@@ -126,7 +128,7 @@
                 <div class="col-md-2">
                     <div class="card_">
                         <div class="avatar_edit">
-                            <img id="img_preview" src="{{ asset('storage/users-avatar/avatar.png') }}" alt="John">
+                            <img id="img_preview" src="{{ asset('storage/users-avatar/' . $thread->avatar) }}" alt="John">
                             <label class="btn_avatar edit-img" for="upload-photo"><i class="fas fa-pen"></i></label>
                             <input type="file" name="avatar" id="upload-photo" accept="image/*"/>
                         </div>

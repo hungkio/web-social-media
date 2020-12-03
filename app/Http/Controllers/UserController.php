@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +33,7 @@ class UserController extends Controller
                     }
                 }
                 // upload
-                $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
+                $avatar = 'user_avatar_' . Str::uuid() . "." . $file->getClientOriginalExtension();
                 $update = User::where('id', Auth::user()->id)->update(['avatar' => $avatar]);
                 $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
                 $success = $update ? 1 : 0;
@@ -46,6 +48,22 @@ class UserController extends Controller
             return back()->with(['success' => 'Updated Success']);
         } catch (\Exception $exception) {
             return back()->with(['error' => $exception->getMessage()]);
+        }
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        if (Hash::check($request->password, \auth()->user()->password)) {
+            try {
+                User::findOrfail(\auth()->id())->update([
+                    'password' => Hash::make($request->new_password)
+                ]);
+                return back()->with(['success' => 'Password Changed Success']);
+            } catch (\Exception $exception) {
+                return back()->with(['error_pass' => $exception->getMessage()]);
+            }
+        } else {
+            return back()->with(['error_pass' => 'Password is incorrect']);
         }
     }
 }

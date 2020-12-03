@@ -30,6 +30,10 @@
             <div class="col-sm-4">
                 @include('profile-component')
             </div>
+        @else
+            <div class="col-sm-4">
+                @include('suggest-thread-component')
+            </div>
         @endif
     </div>
 @endsection
@@ -55,9 +59,9 @@
                     })
                 }
             })
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 let page = 1;
-                if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                     page++;
                     let count_post = $('.list-post-append').find('.panel').length
                     if (count_post < {{ $data->total() ?? 0 }}) {

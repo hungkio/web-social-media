@@ -18,23 +18,43 @@
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <style>
+        .avatar_edit img {
+            width: 60px;
+            height: 60px;
+            display: block;
+            margin-right: 15px;
+            border-radius: 50%;
+        }
+    </style>
     <div class="container bootstrap snippets bootdey list-post">
         <div class="col-sm-12">
             <div class="panel panel-white post panel-shadow">
                 <div class="post-heading">
-                    <div class="pull-left meta">
-                        <div class="title h5">
-                            <h3>{{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}</h3>
+                    <div class="pull-left meta w-50">
+                        <div class="title h5 mt-0">
+                            <div class="avatar_edit">
+                                <img class="float-left" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}"
+                                     alt="John">
+                                <h3 class="float-left">
+                                    {{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}
+                                    @if($thread->user_id == auth()->id())
+                                        <a href="{{ route('threads.edit', $thread->id) }}"><i class="fas fa-edit"
+                                                                                              style="color: #1d68a7"></i>
+                                        </a>
+                                    @endif
+                                </h3>
+                            </div>
                         </div>
                     </div>
                     <div class="float-right mt-3">
                         @if(auth()->id())
                             @if($thread->user_id != auth()->id())
                                 @if($is_join)
-                                    <button class="btn btn-default btn-join btn-success">Leave
+                                    <button class="btn btn-default btn-join btn-danger">Leave
                                     </button>
                                 @else
-                                    <button class="btn btn-default btn-join"><span
+                                    <button class="btn btn-success btn-join"><span
                                             class="glyphicon glyphicon-plus"></span>
                                         Join
                                     </button>
@@ -72,21 +92,22 @@
                 let thread_id = '{{ $thread->id }}'
                 if (btn_text.trim() == 'Join') {
                     $(this).html('Leave');
-                    $(this).addClass('btn-success');
+                    $(this).addClass('btn-danger');
                     let is_join = 1;
                     join_thread(is_join, thread_id)
                 }
                 if (btn_text.trim() == 'Leave') {
                     $(this).html('<span class="glyphicon glyphicon-plus"></span> Join')
-                    $(this).removeClass('btn-success')
+                    $(this).removeClass('btn-danger')
+                    $(this).addClass('btn-success')
                     let is_join = 0;
                     join_thread(is_join, thread_id)
                 }
             })
 
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 let page = 1;
-                if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                     page++;
                     let count_post = $('.list-post-append').find('.panel').length
                     console.log({{ $data->total() ?? 0 }})

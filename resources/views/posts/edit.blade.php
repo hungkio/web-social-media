@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
 
-            <h3>Create post</h3>
+            <h3>Update post</h3>
 
             <form action="{{ route('post.update') }}" method="POST">
                 @csrf

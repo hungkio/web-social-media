@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
     protected $table = 'threads';
-    protected $fillable = ['name', 'parent', 'category_id', 'description', 'user_id'];
+    protected $fillable = ['name', 'parent', 'category_id', 'description', 'user_id', 'avatar'];
 
     const PARENT = 0;
 

@@ -30,6 +30,10 @@
             <div class="col-sm-4">
                 @include('profile-component')
             </div>
+        @else
+            <div class="col-sm-4">
+                @include('suggest-thread-component')
+            </div>
         @endif
     </div>
 
