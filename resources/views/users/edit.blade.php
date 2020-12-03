@@ -26,6 +26,7 @@
             color: #999;
             font-weight: normal;
         }
+
         .card_ {
             max-width: 300px;
             margin: auto;
@@ -111,7 +112,13 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-2">
 
-                    <h3>Profile settings</h3>
+                    <h3>Profile settings
+                        <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                                data-target="#exampleModal">
+                            Change Password
+                        </button>
+                    </h3>
+
 
                     @csrf
                     <input type="hidden" name="id" value="{{ $user->id }}">
@@ -125,7 +132,8 @@
 
                     <div class="form-group">
                         <label for="description">About (optional)</label>
-                        <input class="form-control" name="description" value="{{ old('description', $user->description ?? '') }}"/>
+                        <input class="form-control" name="description"
+                               value="{{ old('description', $user->description ?? '') }}"/>
                         @error('description')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -133,7 +141,8 @@
 
                     <div class="form-group">
                         <label for="birth">Birth Day</label>
-                        <input type="date" class="form-control" name="birth" value="{{ strftime('%Y-%m-%d', strtotime($user->birth)) }}"/>
+                        <input type="date" class="form-control" name="birth"
+                               value="{{ strftime('%Y-%m-%d', strtotime($user->birth)) }}"/>
                         @error('birth')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -163,18 +172,66 @@
                 </div>
             </div>
         </form>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form action="{{ route('user.change_pass') }}" method="post">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLabel">Change Password</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            @csrf
+                            <div class="form-group">
+                                <label for="birth">Current Password</label>
+                                <input type="password" class="form-control" name="password" value="********"/>
+                                @error('password')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="birth">New Password</label>
+                                <input type="password" class="form-control" name="new_password" value="********"/>
+                                @error('new_password')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="birth">Confirm Password</label>
+                                <input type="password" class="form-control" name="confirm_password" value="********"/>
+                                @error('confirm_password')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
 @section('script')
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <script>
         $(function () {
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         $('#img_preview').attr('src', e.target.result);
                     }
 
@@ -182,9 +239,22 @@
                 }
             }
 
-            $("#upload-photo").change(function() {
+            $("#upload-photo").change(function () {
                 readURL(this);
             });
+            let error_pass = '{{\Session::has('error_pass')}}';
+            let error_pass_content = '{{\Session::get('error_pass')}}';
+
+            if (error_pass) {
+                toastr.error(error_pass_content)
+            }
+
+            let success = '{{\Session::has('success')}}';
+            let success_content = '{{\Session::get('success')}}';
+
+            if (success) {
+                toastr.success(success_content)
+            }
         });
     </script>
 @endsection

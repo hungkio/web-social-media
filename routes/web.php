@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('/update', 'UserController@update')->name('update');
         Route::get('/update', 'UserController@edit')->name('edit');
+        Route::post('/change_password', 'UserController@changePassword')->name('change_pass');
     });
 
     Route::prefix('post')->name('post.')->group(function () {
