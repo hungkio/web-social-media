@@ -1,84 +1,89 @@
 @extends('layouts.app')
 
 @section('content1')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <div style="background-color: #DAE0E6">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+              integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+              crossorigin="anonymous">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-          crossorigin="anonymous"/>
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-    <style>
-        .avatar_edit img {
-            width: 60px;
-            height: 60px;
-            display: block;
-            margin-right: 15px;
-            border-radius: 50%;
-        }
-    </style>
-    <div class="container bootstrap snippets bootdey list-post">
-        <div class="col-sm-12">
-            <div class="panel panel-white post panel-shadow">
-                <div class="post-heading">
-                    <div class="pull-left meta w-50">
-                        <div class="title h5 mt-0">
-                            <div class="avatar_edit">
-                                <img class="float-left" src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}"
-                                     alt="John">
-                                <h3 class="float-left">
-                                    {{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}
-                                    @if($thread->user_id == auth()->id())
-                                        <a href="{{ route('threads.edit', $thread->id) }}"><i class="fas fa-edit"
-                                                                                              style="color: #1d68a7"></i>
-                                        </a>
-                                    @endif
-                                </h3>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+              integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+        <style>
+            .avatar_edit img {
+                width: 60px;
+                height: 60px;
+                display: block;
+                margin-right: 15px;
+                border-radius: 50%;
+            }
+        </style>
+        <div class="container bootstrap snippets bootdey list-post">
+            <div class="col-sm-12">
+                <div class="panel panel-white post panel-shadow">
+                    <div class="post-heading">
+                        <div class="pull-left meta w-50">
+                            <div class="title h5 mt-0">
+                                <div class="avatar_edit">
+                                    <img class="float-left"
+                                         src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}"
+                                         alt="John">
+                                    <h3 class="float-left">
+                                        {{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}
+                                        @if($thread->user_id == auth()->id())
+                                            <a href="{{ route('threads.edit', $thread->id) }}"><i class="fas fa-edit"
+                                                                                                  style="color: #1d68a7"></i>
+                                            </a>
+                                        @endif
+                                    </h3>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="float-right mt-3">
-                        @if(auth()->id())
-                            @if($thread->user_id != auth()->id())
-                                @if($is_join)
-                                    <button class="btn btn-default btn-join btn-danger">Leave
-                                    </button>
+                        <div class="float-right mt-3">
+                            @if(auth()->id())
+                                @if($thread->user_id != auth()->id())
+                                    @if($is_join)
+                                        <button class="btn btn-default btn-join btn-danger">Leave
+                                        </button>
+                                    @else
+                                        <button class="btn btn-success btn-join"><span
+                                                class="glyphicon glyphicon-plus"></span>
+                                            Join
+                                        </button>
+                                    @endif
                                 @else
-                                    <button class="btn btn-success btn-join"><span
-                                            class="glyphicon glyphicon-plus"></span>
-                                        Join
-                                    </button>
+                                    <a href="{{ route('threads.manage', $thread->id) }}"
+                                       class="btn btn-success mr-3">Manage
+                                    </a>
+                                    <a href="{{ route('threads.delete', $thread->id) }}"
+                                       class="btn btn-danger delete-thread">Delete
+                                    </a>
                                 @endif
-                            @else
-                                <a href="{{ route('threads.manage', $thread->id) }}"
-                                   class="btn btn-success mr-3">Manage
-                                </a>
-                                <a href="{{ route('threads.delete', $thread->id) }}"
-                                   class="btn btn-danger delete-thread">Delete
-                                </a>
                             @endif
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10 list-post-append">
-            @if($data && $data->isNotEmpty())
-                @foreach($data as $post)
-                    @include('post-component')
-                @endforeach
-            @endif
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10 list-post-append">
+                @if($data && $data->isNotEmpty())
+                    @foreach($data as $post)
+                        @include('post-component')
+                    @endforeach
+                @endif
+            </div>
         </div>
     </div>
 @endsection

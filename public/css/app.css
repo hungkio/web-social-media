@@ -11367,3 +11367,6 @@ a.text-dark:focus {
 .post-description img {
     max-width: 100%!important;
 }
+.navbar {
+    margin-bottom: 0!important;
+}
