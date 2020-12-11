@@ -33,7 +33,7 @@
                 Down vote
             </button>
 
-            @if($post->user_id == auth()->id() || ($thread && $thread->user_id == auth()->id()))
+            @if($post->user_id == auth()->id() || (isset($thread) && $thread->user_id == auth()->id()))
                 <button type="button" class='btn float-right delete_post'>
                     <a href="{{ route('post.delete', $post->id) }}">
                         <i class="far fa-trash-alt"></i>Delete

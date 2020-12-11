@@ -11387,3 +11387,6 @@ a.text-dark:focus {
     z-index: 1;
     margin-left: 50%;
 }
+.list-post {
+    padding-bottom: 50px;
+}
