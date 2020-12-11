@@ -34,14 +34,14 @@
             <div class="col-sm-12">
                 <div class="panel panel-white post panel-shadow">
                     <div class="post-heading">
-                        <div class="pull-left meta w-50">
+                        <div class="pull-left meta">
                             <div class="title h5 mt-0">
                                 <div class="avatar_edit">
                                     <img class="float-left"
                                          src="{{ asset('/storage/users-avatar/' . $thread->avatar) }}"
                                          alt="John">
                                     <h3 class="float-left">
-                                        {{ ucwords($thread->name) }} - {{ ucwords($thread->description) }}
+                                        {{ substr(ucwords($thread->name . ' - ' . $thread->description),0, 50) }}
                                         @if($thread->user_id == auth()->id())
                                             <a href="{{ route('threads.edit', $thread->id) }}"><i class="fas fa-edit"
                                                                                                   style="color: #1d68a7"></i>
