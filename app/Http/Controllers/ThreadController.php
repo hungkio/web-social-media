@@ -75,13 +75,6 @@ class ThreadController extends Controller
             $file = $request->file('avatar');
             // if size less than 150MB
             if ($file->getSize() < 150000000) {
-                // delete the older one
-                if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
-                    $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
-                    if (file_exists($path)) {
-                        @unlink($path);
-                    }
-                }
                 // upload
                 $avatar = 'thread_avatar_' . Str::uuid() . "." . $file->getClientOriginalExtension();
                 $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
@@ -115,13 +108,6 @@ class ThreadController extends Controller
             $file = $request->file('avatar');
             // if size less than 150MB
             if ($file->getSize() < 150000000) {
-                // delete the older one
-                if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
-                    $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
-                    if (file_exists($path)) {
-                        @unlink($path);
-                    }
-                }
                 // upload
                 $avatar = 'thread_avatar_' . Str::uuid() . "." . $file->getClientOriginalExtension();
                 $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
