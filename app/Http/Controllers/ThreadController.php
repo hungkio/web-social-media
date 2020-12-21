@@ -83,7 +83,7 @@ class ThreadController extends Controller
                     }
                 }
                 // upload
-                $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
+                $avatar = 'thread_avatar_' . Str::uuid() . "." . $file->getClientOriginalExtension();
                 $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
             } else {
                 $msg = "File extension not allowed!";
