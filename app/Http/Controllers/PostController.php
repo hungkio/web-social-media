@@ -145,8 +145,8 @@ class PostController extends Controller
                         }
                     }
                 }
-                if (sizeof($threads_arr) > 7) {
-                    $threads_arr = array_slice($threads_arr, 0, 7);
+                if (sizeof($threads_arr) > 6) {
+                    $threads_arr = array_slice($threads_arr, 0, 6);
                     $threads = collect($threads_arr);
                 }
 
@@ -169,6 +169,7 @@ class PostController extends Controller
                         }
                     }
                 }
+                $threads_arr = array_slice($threads_arr, 0, 6);
                 $threads = collect($threads_arr);
             }
 
@@ -182,8 +183,8 @@ class PostController extends Controller
                     $threads_arr[] = $thread;
                 }
             }
-            if (sizeof($threads_arr) > 7) {
-                $threads_arr = array_slice($threads_arr, 0, 7);
+            if (sizeof($threads_arr) > 6) {
+                $threads_arr = array_slice($threads_arr, 0, 6);
                 $threads = collect($threads_arr);
             } else {
                 $threads = collect($threads_arr);
