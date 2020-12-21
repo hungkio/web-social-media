@@ -180,6 +180,7 @@ class ThreadController extends Controller
         {
             $html .= view('post-component', [
                 'post' => $post,
+                'thread' => $thread,
             ]);
         }
         return response()->json(['data' => $html]);
