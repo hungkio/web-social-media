@@ -11367,3 +11367,26 @@ a.text-dark:focus {
 .post-description img {
     max-width: 100%!important;
 }
+.navbar {
+    position: fixed!important;
+    margin-bottom: 0!important;
+    width: 100%;
+    z-index: 2;
+}
+.list-post {
+    margin-top: 32px;
+    padding-top: 10px;
+}
+
+.container-fluid {
+    margin-top: 32px;
+    padding-top: 10px;
+}
+.container .col-sm-4 {
+    position: fixed!important;
+    z-index: 1;
+    margin-left: 50%;
+}
+.list-post {
+    padding-bottom: 50px;
+}

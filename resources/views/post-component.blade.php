@@ -33,12 +33,14 @@
                 Down vote
             </button>
 
-            @if($post->user_id == auth()->id())
+            @if($post->user_id == auth()->id() || (isset($thread) && $thread->user_id == auth()->id()))
                 <button type="button" class='btn float-right delete_post'>
                     <a href="{{ route('post.delete', $post->id) }}">
                         <i class="far fa-trash-alt"></i>Delete
                     </a>
                 </button>
+            @endif
+            @if($post->user_id == auth()->id())
 
                 <button type="button" class='btn float-right'>
                     <a href="{{ route('post.edit', $post->id) }}">
@@ -46,6 +48,7 @@
                     </a>
                 </button>
             @endif
+
             <button type="button" class="btn dropdown float-right">
                                     <span class='button' id="dropdownMenuButton" data-toggle="dropdown"
                                           aria-haspopup="true" aria-expanded="false"><i

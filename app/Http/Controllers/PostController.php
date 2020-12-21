@@ -42,7 +42,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $data = $this->postRepository->getAll(3);
+        $data = $this->postRepository->getAll(5);
         $suggest_threads = $this->suggestThreads();
         return view('home', [
             'data' => $data ?? '',
@@ -52,7 +52,7 @@ class PostController extends Controller
 
     public function getPost()
     {
-        $data = $this->postRepository->getAll(3);
+        $data = $this->postRepository->getAll(5);
         $html = '';
         foreach ($data as $post) {
             $html .= view('post-component', compact('post'))->render();
@@ -62,7 +62,7 @@ class PostController extends Controller
 
     public function MyPost()
     {
-        $data = $this->postRepository->getMyPost(3);
+        $data = $this->postRepository->getMyPost(5);
         $user = auth()->user();
         return view('users.home', [
             'data' => $data ?? '',
@@ -72,7 +72,7 @@ class PostController extends Controller
 
     public function getMyPost()
     {
-        $data = $this->postRepository->getMyPost(3);
+        $data = $this->postRepository->getMyPost(5);
         $html = '';
         foreach ($data as $post) {
             $html .= view('post-component', compact('post'))->render();
@@ -82,7 +82,7 @@ class PostController extends Controller
 
     public function popular()
     {
-        $data = $this->postRepository->getPopular(3);
+        $data = $this->postRepository->getPopular(5);
         $suggest_threads = $this->suggestThreads();
         return view('posts.popular', [
             'data' => $data ?? '',
@@ -92,7 +92,7 @@ class PostController extends Controller
 
     public function getPopular()
     {
-        $data = $this->postRepository->getPopular(3);
+        $data = $this->postRepository->getPopular(5);
         $html = '';
         foreach ($data as $post) {
             $html .= view('post-component', compact('post'))->render();
@@ -148,9 +148,28 @@ class PostController extends Controller
                 if (sizeof($threads_arr) > 7) {
                     $threads_arr = array_slice($threads_arr, 0, 7);
                     $threads = collect($threads_arr);
-                } else {
-                    $threads = collect($threads_arr);
                 }
+
+                // if threads_arr still < 7 => get mote from top thread
+                $threads_top = $this->threadRepository->getThreadRecommend();
+                if ($threads_top) {
+                    foreach ($threads_top as $thread) {
+                        if ($thread->user_id != auth()->id()) {
+                            //check member
+                            $is_member = 0;
+                            foreach ($thread->members as $member)
+                            {
+                                if ($member->user_id == auth()->id()) {
+                                    $is_member = 1;
+                                }
+                            }
+                            if (!$is_member) {
+                                $threads_arr[] = $thread;
+                            }
+                        }
+                    }
+                }
+                $threads = collect($threads_arr);
             }
 
             // unset the same record

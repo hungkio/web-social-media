@@ -28,51 +28,52 @@
         }
     </style>
     <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
 
-            <h3>Update post</h3>
+                <h3>Update post</h3>
 
-            <form action="{{ route('post.update') }}" method="POST">
-                @csrf
-                @if($threads && $threads->isNotEmpty())
-                    <select class="form-control mb-3" id="exampleFormControlSelect1" name="thread_id">
-                        @foreach($threads as $thread)
-                            <option value="{{ $thread->id }}">{{ $thread->name }}</option>
-                        @endforeach
-                    </select>
-                @endif
+                <form action="{{ route('post.update') }}" method="POST">
+                    @csrf
+                    @if($threads && $threads->isNotEmpty())
+                        <select class="form-control mb-3" id="exampleFormControlSelect1" name="thread_id">
+                            @foreach($threads as $thread)
+                                <option value="{{ $thread->id }}">{{ $thread->name }}</option>
+                            @endforeach
+                        </select>
+                    @endif
 
-                <input type="hidden" name="id" value="{{ $data->id }}">
-                <div class="form-group">
-                    <label for="title">Title <span class="require">*</span></label>
-                    <input type="text" class="form-control" name="title" value="{{ $data->title }}"/>
-                    @error('title')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <div class="form-group">
+                        <label for="title">Title <span class="require">*</span></label>
+                        <input type="text" class="form-control" name="title" value="{{ $data->title }}"/>
+                        @error('title')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea rows="5" class="form-control" name="content" id="summernote">{{ $data->content }}</textarea>
-                    @error('content')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea rows="5" class="form-control" name="content"
+                                  id="summernote">{{ $data->content }}</textarea>
+                        @error('content')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        Update
-                    </button>
-                    <button class="btn btn-default">
-                        <a href="{{ route('post.my_post') }}">Cancel</a>
-                    </button>
-                </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            Update
+                        </button>
+                        <button class="btn btn-default">
+                            <a href="{{ route('post.my_post') }}">Cancel</a>
+                        </button>
+                    </div>
 
-            </form>
+                </form>
+            </div>
+
         </div>
-
-    </div>
     </div>
 @endsection
 @section('script')
